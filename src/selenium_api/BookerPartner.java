@@ -1,6 +1,5 @@
 package selenium_api;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -13,7 +12,7 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import java.text.SimpleDateFormat;
+
 
 
 public class BookerPartner {
@@ -72,6 +71,7 @@ public class BookerPartner {
 				cell.click();
 				break;
 			}
+			
 		}
 	}
 //   SEARCH HOTEL_TESTSCRIPT	
@@ -94,43 +94,36 @@ public class BookerPartner {
 		destination.sendKeys(Keys.RETURN);
 		System.out.println("Test: " + destination.getText());
 
-		//select check-in and  check-out date
+		//select check-in and check-out date
 		WebElement startHoliday = driver.findElement(By.className("startHoliday"));
 		List<WebElement> columns = startHoliday.findElements(By.tagName("td"));
-		for (WebElement cell: columns)
-	    {
-	        if (cell.getText().equals("12"))
-	        {
-	            cell.findElement(By.linkText("12")).click();
-	            break;
-	        }
-	    }
 		
 
-		WebElement searchbutton = driver.findElement(By.xpath("hotel-search-button btn btn-search"));
+//		for (WebElement cell: columns)
+//	    {
+//	        if (cell.getText().equals("12"))
+//	        {
+//	            cell.findElement(By.linkText("12")).click();
+//	            break;
+//	        }
+//	    }
+		
+
+		WebElement searchbutton = driver.findElement(By.xpath("//div[contains(text(),'Tìm kiếm')]"));
         searchbutton.click();
 
         //check search results's list 
-      WebElement outBoundTickets = driver.findElement(By.id("outBoundTickets"));
-        List<WebElement> flight = outBoundTickets.findElements(By.xpath("//div[@class='panel panel-default ticket first-ticket']"));
+      WebElement hotelname = driver.findElement(By.id("hotel-321"));
+        List<WebElement> flight = hotelname.findElements(By.xpath("//div[@class='panel panel-default ticket first-ticket']"));
         System.out.println(flight.size());
         Assert.assertEquals(true, flight.size()>0);
-
+        
+        
 	}
+		
+
 	 
-	
-	
-	public String tomorrow() {
-	        Calendar c = Calendar.getInstance();
-	        c.add(Calendar.DATE, 1);
-	        return new SimpleDateFormat("dd/MM/yyyy").format(c.getTime());
-	    }
-	  public String dayAfterTomorrow(){
-	        Calendar c = Calendar.getInstance();
-	        c.add(Calendar.DATE, 2);
-	        return new SimpleDateFormat("dd/MM/yyyy").format(c.getTime());
-	    }
- 
+
 	  
 	
 //  SEARCH TRIPI HOLIDAY_TESTSCRIPT	
@@ -165,12 +158,12 @@ public class BookerPartner {
 		selectDate("20");
 		selectDate("23");
 
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			Thread.sleep(10000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 //		click search button
 		WebElement searchbutton = driver.findElement(By.xpath("//div[contains(text(),'Tìm kiếm')]"));
         searchbutton.click();
