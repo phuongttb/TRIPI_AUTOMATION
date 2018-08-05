@@ -105,7 +105,7 @@ public class BookerPartner {
         searchbutton.click();
 
         //check search results's list 
-      WebElement hotelname = driver.findElement(By.id("hotel-321"));
+        WebElement hotelname = driver.findElement(By.id("hotel-321"));
         List<WebElement> flight = hotelname.findElements(By.xpath("//div[@class='panel panel-default ticket first-ticket']"));
         System.out.println(flight.size());
         Assert.assertEquals(true, flight.size()>0);
