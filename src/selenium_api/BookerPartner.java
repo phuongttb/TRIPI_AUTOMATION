@@ -1,5 +1,6 @@
 package selenium_api;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -12,54 +13,51 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import java.text.SimpleDateFormat;
+
 
 public class BookerPartner {
 	WebDriver driver;
 
-	@Test(priority=1)
-	public void TC_01_SearchFlight() throws Exception {
+	@Test(enabled=false)
+	public void TC_01_SearchFlight_RoundTrip() throws Exception {
 		
 		String homePageUrl = driver.getCurrentUrl();
 		Assert.assertEquals(homePageUrl, "https://dev.tripi.vn/");
-
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+		//Click on "Vé máy bay" tab
 		driver.findElement(By.xpath("//div[contains(text(),'Vé máy bay')]")).click();
 		
-		// Chọn điểm đi
+		// Enter "From" station code eg.HAN
 		WebElement eFromAirport = driver.findElement(By.id("flight-from-airport-value"));
 		eFromAirport.sendKeys("HAN");
 		Thread.sleep(2000);
 		eFromAirport.sendKeys(Keys.RETURN);
 		System.out.println("Test: " + eFromAirport.getText());
-		// Chọn chiều về
+		// Enter "To" station code eg.SGN
 		WebElement eToAirport = driver.findElement(By.id("flight-to-airport-value"));
 		eToAirport.sendKeys("SGN");
 		Thread.sleep(2000);
 		eToAirport.sendKeys(Keys.RETURN);
 		System.out.println("Test: " + eToAirport.getText());
-		//click vào text khứ hồi
-		driver.findElement(By.xpath("//span[contains(text(),'Khứ hồi')]")).click();
-
-		//		
 		
-		selectDate("06");
-		selectDate("08");
-
-		//		try {
-		//			Thread.sleep(500);
-		//		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-		//			e.printStackTrace();
-		//		}
-		//		click search button
+		//Select roundtrip tab
+		driver.findElement(By.xpath("//span[contains(text(),'Khứ hồi')]")).click();
+	
+		//khai bao departure date and return date
+		selectDate("10");
+		selectDate("15");
+		
+		//all fields filled in. Now click on search
 		WebElement searchbutton = driver.findElement(By.xpath("//button[@class='flight-search-button btn btn-search']"));
         searchbutton.click();
-
-        Thread.sleep(5000);
  
-        //Tim cac ket qua va check so luong > 0 hay khong chua check ket qua tra ra dung hay sai
+        //Check the system return search results 
         WebElement outBoundTickets = driver.findElement(By.id("outBoundTickets"));
         List<WebElement> flight = outBoundTickets.findElements(By.xpath("//div[@class='panel panel-default ticket first-ticket']"));
         
+        //verify that result appears for the provided journey search
         System.out.println(flight.size());
         Assert.assertEquals(true, flight.size()>0);
 	}
@@ -76,22 +74,66 @@ public class BookerPartner {
 			}
 		}
 	}
+//   SEARCH HOTEL_TESTSCRIPT	
+	
+	@Test()
+	public void TC_02_SearchHotel() throws Exception {
+		
+		//Navigate to homepage 
+		String homePageUrl = driver.getCurrentUrl();
+		Assert.assertEquals(homePageUrl, "https://dev.tripi.vn/");
+		driver.manage().window().maximize();
+		
+		//	click on Hotel tab
+		driver.findElement(By.xpath("//div[contains(text(),'Khách sạn')]")).click();
+		
+		// select destination hotel
+		WebElement destination = driver.findElement(By.id("hotel-autocomplete-input-value"));
+		destination.sendKeys("Đà Nẵng");
+		Thread.sleep(2000);
+		destination.sendKeys(Keys.RETURN);
+		System.out.println("Test: " + destination.getText());
+
+		//select check-in and  check-out date
+		WebElement startHoliday = driver.findElement(By.className("startHoliday"));
+		List<WebElement> columns = startHoliday.findElements(By.tagName("td"));
+		for (WebElement cell: columns)
+	    {
+	        if (cell.getText().equals("12"))
+	        {
+	            cell.findElement(By.linkText("12")).click();
+	            break;
+	        }
+	    }
+		
+
+		WebElement searchbutton = driver.findElement(By.xpath("hotel-search-button btn btn-search"));
+        searchbutton.click();
+
+        //check search results's list 
+      WebElement outBoundTickets = driver.findElement(By.id("outBoundTickets"));
+        List<WebElement> flight = outBoundTickets.findElements(By.xpath("//div[@class='panel panel-default ticket first-ticket']"));
+        System.out.println(flight.size());
+        Assert.assertEquals(true, flight.size()>0);
+
+	}
+	 
 	
 	
+	public String tomorrow() {
+	        Calendar c = Calendar.getInstance();
+	        c.add(Calendar.DATE, 1);
+	        return new SimpleDateFormat("dd/MM/yyyy").format(c.getTime());
+	    }
+	  public String dayAfterTomorrow(){
+	        Calendar c = Calendar.getInstance();
+	        c.add(Calendar.DATE, 2);
+	        return new SimpleDateFormat("dd/MM/yyyy").format(c.getTime());
+	    }
+ 
+	  
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+//  SEARCH TRIPI HOLIDAY_TESTSCRIPT	
 	
 	@Test(enabled=false)
 	public void TC_02_SearchFlightholiday() throws Exception {
@@ -145,11 +187,14 @@ public class BookerPartner {
 		driver.get("https://dev.tripi.vn/");
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
+		
+	
 	}
 
 	@AfterClass
 	public void afterClass() {
 		driver.quit();
+		
 	}
 
 }
