@@ -1,5 +1,6 @@
 package selenium_api;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -43,10 +44,21 @@ public class BookerPartner {
 		
 		//Select roundtrip tab
 		driver.findElement(By.xpath("//span[contains(text(),'Khứ hồi')]")).click();
-	
+		System.out.print(new Date());
 		//khai bao departure date and return date
-		selectDate("10");
-		selectDate("15");
+		
+		//click on departure date	
+		WebElement depaturedate = driver.findElement(By.xpath("//input[@id='flight-checkin-date']"));
+		depaturedate.click();
+		selectDate("14");
+		
+		//click on return date	
+		WebElement returndate = driver.findElement(By.xpath("//input[@id='flight-checkout-date']"));
+		returndate.click();
+		
+		selectDate("19");
+			
+		System.out.println("OKKKKKKK");
 		
 		//all fields filled in. Now click on search
 		WebElement searchbutton = driver.findElement(By.xpath("//button[@class='flight-search-button btn btn-search']"));
@@ -67,6 +79,7 @@ public class BookerPartner {
 	public void selectDate(String date) {
 
 		WebElement startHoliday = driver.findElement(By.className("startHoliday"));
+		System.out.println(startHoliday);
 		List<WebElement> columns = startHoliday.findElements(By.tagName("td"));
 		System.out.println("LEN:  " + columns.size());
 		for (WebElement cell : columns) {
@@ -80,7 +93,7 @@ public class BookerPartner {
 		
 //   SEARCH HOTEL_TESTSCRIPT	
 	
-	@Test()
+	@Test(enabled=false)
 	public void TC_02_SearchHotel() throws Exception {
 		
 		//Navigate to home page 
@@ -97,11 +110,17 @@ public class BookerPartner {
 		Thread.sleep(2000);
 		destination.sendKeys(Keys.RETURN);
 		System.out.println("Test: " + destination.getText());
+		driver.findElement(By.id("flight-checkin-date")).click();
 		
 		selectDate("10");
 		selectDate("15");
 		
-		WebElement searchbutton = driver.findElement(By.xpath("//button[@class='flight-search-button btn btn-search']"));
+		//click on departure date	
+		WebElement depaturedate = driver.findElement(By.xpath("//input[@id='flight-checkin-date']"));
+		depaturedate.click();
+		
+		//click on return date	
+		WebElement searchbutton = driver.findElement(By.xpath("//input[@id='flight-checkout-date']"));
         searchbutton.click();
 
         //check search results's list 
