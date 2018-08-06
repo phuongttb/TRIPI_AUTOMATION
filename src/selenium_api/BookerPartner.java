@@ -9,6 +9,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -16,6 +17,8 @@ import org.testng.annotations.Test;
 
 public class BookerPartner {
 	WebDriver driver;
+	WebDriverWait wait;
+
 
 	@Test()
 	public void TC_01_SearchFlight_RoundTrip() throws Exception {
@@ -24,6 +27,7 @@ public class BookerPartner {
 		Assert.assertEquals(homePageUrl, "https://dev.tripi.vn/");
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+		
 		// Click on "vé máy bay" tab
 		driver.findElement(By.xpath("//div[contains(text(),'Vé máy bay')]")).click();
 
@@ -33,6 +37,7 @@ public class BookerPartner {
 		Thread.sleep(2000);
 		eFromAirport.sendKeys(Keys.RETURN);
 		System.out.println("Test: " + eFromAirport.getText());
+		
 		// Enter "To" station code eg.SGN
 		WebElement eToAirport = driver.findElement(By.id("flight-to-airport-value"));
 		eToAirport.sendKeys("SGN");
@@ -40,18 +45,16 @@ public class BookerPartner {
 		eToAirport.sendKeys(Keys.RETURN);
 		System.out.println("Test: " + eToAirport.getText());
 
-		// Select roundtrip tab
+		// Click on RoundTrip tab
 		driver.findElement(By.xpath("//span[contains(text(),'Khứ hồi')]")).click();
-		System.out.print(new Date());
-		// khai bao departure date and return date
 
-		// click on departure date
+		// click on Departure date
 		WebElement depaturedate = driver.findElement(By.xpath("//input[@id='flight-checkin-date']"));
 		depaturedate.click();
 		
 		
 		selectDate("14");
-//		selectDate("15");
+		//selectDate("15");
 		WebElement returnDate = driver.findElement(By.xpath("//input[@id='flight-checkout-date']"));
 		returnDate.click();
 		
@@ -64,20 +67,15 @@ public class BookerPartner {
 				break;
 			}
 		}
-		
-		
-//		// click on return date
-//		WebElement returndate = driver.findElement(By.xpath("//input[@id='flight-checkout-date']"));
-//		returndate.click();
-		
-		Thread.sleep(10000);
+	
 
 
 		// all fields filled in. Now click on search
-		WebElement searchbutton = driver
-				.findElement(By.xpath("//button[@class='flight-search-button btn btn-search']"));
+		WebElement searchbutton = driver.findElement(By.xpath("//button[@class='flight-search-button btn btn-search']"));
 		searchbutton.click();
 
+		
+		
 		// Check the system return search results
 		WebElement outBoundTickets = driver.findElement(By.id("outBoundTickets"));
 		List<WebElement> flight = outBoundTickets
@@ -89,6 +87,9 @@ public class BookerPartner {
 
 		// Navigate to previous page
 		driver.navigate().back();
+		
+		//sau khoảng 10k miliseconds sẽ chạy tiếp testcase thứ 2
+		wait =new WebDriverWait(driver,30);
 	}
 
 	public void selectDate(String date) {
@@ -105,13 +106,8 @@ public class BookerPartner {
 
 	// SEARCH HOTEL_TESTSCRIPT
 
-	@Test(enabled = false)
+	@Test(enabled = true)
 	public void TC_02_SearchHotel() throws Exception {
-
-		// Navigate to home page
-		// String homePageUrl = driver.getCurrentUrl();
-		// Assert.assertEquals(homePageUrl, "https://dev.tripi.vn/");
-		// driver.manage().window().maximize();
 
 		// click on Hotel tab
 		driver.findElement(By.xpath("//div[contains(text(),'Khách sạn')]")).click();
@@ -122,21 +118,29 @@ public class BookerPartner {
 		Thread.sleep(2000);
 		destination.sendKeys(Keys.RETURN);
 		System.out.println("Test: " + destination.getText());
-		driver.findElement(By.id("flight-checkin-date")).click();
+		
+		
+		//click on check-in date
+		driver.findElement(By.xpath("//input[@id='hotel-check-in-value']")).click();
 
 		selectDate("10");
-		selectDate("15");
-
-		// click on departure date
-		WebElement depaturedate = driver.findElement(By.xpath("//input[@id='flight-checkin-date']"));
-		depaturedate.click();
-
-		// click on return date
-		WebElement searchbutton = driver.findElement(By.xpath("//input[@id='flight-checkout-date']"));
-		searchbutton.click();
+	
+		WebElement checkoutdate = driver.findElement(By.xpath("//input[@id='hotel-check-out-value']"));
+		checkoutdate.click();
+		
+		WebElement dateWidget= driver.findElement(By.cssSelector("div.date-picker-wrapper:nth-child(3)"));
+		List<WebElement> columns = dateWidget.findElements(By.tagName("td"));
+		System.out.println("LEN:  " + columns.size());
+		for (WebElement cell : columns) {
+			if (cell.getText().equals("15")) {
+				cell.click();
+				break;
+			}
+		}
+		
 
 		// check search results's list
-		WebElement hotelname = driver.findElement(By.id("hotel-321"));
+		WebElement hotelname = driver.findElement(By.id("hotel-1549"));
 		List<WebElement> flight = hotelname
 				.findElements(By.xpath("//div[@class='panel panel-default ticket first-ticket']"));
 		System.out.println(flight.size());
@@ -146,7 +150,7 @@ public class BookerPartner {
 	// select check-in and check-out date
 	public void selectDatehotel(String date) {
 
-		WebElement startHoliday = driver.findElement(By.className("startHoliday"));
+		WebElement startHoliday = driver.findElement(By.className("ng-scope"));
 		List<WebElement> columns = startHoliday.findElements(By.tagName("td"));
 		System.out.println("LEN:  " + columns.size());
 		for (WebElement cell : columns) {
@@ -191,13 +195,7 @@ public class BookerPartner {
 		selectDate("20");
 		selectDate("23");
 
-		// try {
-		// Thread.sleep(10000);
-		// } catch (InterruptedException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// click search button
+	
 		WebElement searchbutton = driver.findElement(By.xpath("//div[contains(text(),'Tìm kiếm')]"));
 		searchbutton.click();
 
