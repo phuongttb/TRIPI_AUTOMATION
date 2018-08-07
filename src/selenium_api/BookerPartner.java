@@ -82,7 +82,13 @@ public class BookerPartner {
 		// verify that result appears for the provided journey search
 		System.out.println(flight.size());
 		Assert.assertEquals(true, flight.size() > 0);
-
+		
+		//select tickets and book depature city
+		driver.findElement(By.xpath("//button[@class='flight-select-single-ticket btn btn-xs btn-tripi']")).click();
+		
+		//select ticket and book return 
+//		driver.findElement(By.xpath("//button[@class='flight-select-return-ticket btn btn-xs btn-tripi']")).click();
+	
 		// Navigate to previous page
 		driver.navigate().back();
 
@@ -121,26 +127,32 @@ public class BookerPartner {
 		driver.findElement(By.xpath("//input[@id='hotel-check-in-value']")).click();
 
 		selectDate("10");
-		selectDate("15");
+
+		
 		// click on check-out date
-//		driver.findElement(By.xpath("//input[@id='hotel-check-out-value']")).click();
+		driver.findElement(By.xpath("//input[@id='hotel-check-out-value']")).click();
 
-//		WebElement dateWidget = driver.findElement(By.cssSelector("div.date-picker-wrapper:nth-child(3)"));
-//		List<WebElement> columns = dateWidget.findElements(By.tagName("td"));
-//		System.out.println("LEN:  " + columns.size());
-//		for (WebElement cell : columns) {
-//			if (cell.getText().equals("15")) {
-//				cell.click();
-//				break;
-//			}
-//		}
-
-		// check search results's list
-		WebElement hotelname = driver.findElement(By.id("//div[@id='hotel-1285']"));
-		List<WebElement> flight = hotelname.findElements(By.xpath("//div[@class='panel panel-default ticket first-ticket']"));
-		System.out.println(flight.size());
-		Assert.assertEquals(true, flight.size() > 0);
+		WebElement dateWidget = driver.findElement(By.cssSelector("div.date-picker-wrapper:nth-child(3)"));
+		List<WebElement> columns = dateWidget.findElements(By.tagName("td"));
+		System.out.println("LEN:  " + columns.size());
+		for (WebElement cell : columns) {
+			if (cell.getText().equals("15")) {
+				cell.click();
+				break;
+			}
+			
+		}
+	
+		driver.findElement(By.xpath("//button[@class='hotel-search-button btn btn-search']")).click();
+		
+		//kiểm tra xem ở page title ở màn hình kết quả hotel trả ra có đúng không
+		System.out.println("Check homepage title");
+		String homePageTitle = driver.getTitle();
+		System.out.println(homePageTitle);
+		System.out.println(homePageTitle.length());
+		Assert.assertEquals(homePageTitle, "Khách sạn ở Đà Nẵng - Trang 1");
 	}
+	
 
 	// select check-in and check-out date
 	public void selectDatehotel(String date) {
