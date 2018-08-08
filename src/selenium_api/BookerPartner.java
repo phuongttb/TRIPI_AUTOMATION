@@ -1,5 +1,6 @@
 package selenium_api;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -19,13 +20,13 @@ public class BookerPartner {
 	WebDriver driver;
 	WebDriverWait wait;
 
-	@Test(enabled = false)
+	@Test(enabled = true)
 	public void TC_01_SearchFlight_RoundTrip() throws Exception {
 
-//		String homePageUrl = driver.getCurrentUrl();
-//		Assert.assertEquals(homePageUrl, "https://www.tripi.vn/");
-//		driver.manage().window().maximize();
-//		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+		String homePageUrl = driver.getCurrentUrl();
+		Assert.assertEquals(homePageUrl, "https://www.tripi.vn/");
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
 
 		// Click on "vé máy bay" tab
 		driver.findElement(By.xpath("//div[contains(text(),'Vé máy bay')]")).click();
@@ -73,21 +74,19 @@ public class BookerPartner {
 		WebElement searchbutton = driver
 				.findElement(By.xpath("//button[@class='flight-search-button btn btn-search']"));
 		searchbutton.click();
-
-		// Find element on search results page
-		WebElement outBoundTickets = driver.findElement(By.id("outBoundTickets"));
-		List<WebElement> flight = outBoundTickets
-				.findElements(By.xpath("//div[@class='panel panel-default ticket first-ticket tripi-suggest']"));
-
-		// verify that result appears for the provided journey search
-		System.out.println(flight.size());
-		Assert.assertEquals(true, flight.size() > 0);
 		
-		//select tickets and book depature city
-		driver.findElement(By.xpath("//button[@class='flight-select-single-ticket btn btn-xs btn-tripi']")).click();
+		//check title page and print page title
+		System.out.println("Check homepage title");
+		String homePageTitle = driver.getTitle();
+		System.out.println(homePageTitle);
+    	System.out.println(homePageTitle.length());
+		Assert.assertEquals(homePageTitle, "Vé máy bay Hà Nội - Tân Sơn Nhất (SGN) - Tripi.vn");
+		Thread.sleep(50000);
 		
-		//select ticket and book return 
-//		driver.findElement(By.xpath("//button[@class='flight-select-return-ticket btn btn-xs btn-tripi']")).click();
+		//click on "chọn vé này" button
+		driver.findElement(By.xpath("//span[contains(text(),'Chọn vé này')]")).click();
+		driver.findElement(By.xpath("//span[contains(text(),'Chọn vé này')]")).click();
+		
 	
 		// Navigate to previous page
 		driver.navigate().back();
@@ -129,7 +128,7 @@ public class BookerPartner {
 		selectDate("10");
 
 		
-		// click on check-out date
+		// select check-out date
 		driver.findElement(By.xpath("//input[@id='hotel-check-out-value']")).click();
 
 		WebElement dateWidget = driver.findElement(By.cssSelector("div.date-picker-wrapper:nth-child(3)"));
@@ -142,8 +141,10 @@ public class BookerPartner {
 			}
 			
 		}
-	
+		// click on search button
 		driver.findElement(By.xpath("//button[@class='hotel-search-button btn btn-search']")).click();
+		Thread.sleep(5000);
+		
 		
 		//kiểm tra xem ở page title ở màn hình kết quả hotel trả ra có đúng không
 		System.out.println("Check homepage title");
@@ -151,7 +152,34 @@ public class BookerPartner {
 		System.out.println(homePageTitle);
 		System.out.println(homePageTitle.length());
 		Assert.assertEquals(homePageTitle, "Khách sạn ở Đà Nẵng - Trang 1");
-	}
+		
+		//click on book button on search results 
+		driver.findElement(By.xpath("//span[contains(text(),'Đặt phòng')]")).click();
+		
+		//open new tab
+		//Lưu trữ mã id của tất cả các tab đang mở Do lúc này browser có 2 tabs nên nó sẽ có 2 tab id được lưu vào array list
+		//2 tabs id đó sẽ lần lượt có index là 0 và 1 trong array list muôn trỏ tabs thứ 2 để thao tác Vậy sẽ switch sang index 1 tương ứng tab thứ 2
+		
+		ArrayList<String> tabs1 = new ArrayList<String> (driver.getWindowHandles());
+		driver.switchTo().window(tabs1.get(1));
+		
+		//Click on book now button on hotel details
+		driver.findElement(By.xpath("//span[contains(text(),'Đặt ngay')]")).click();
+		 
+		//open new tab
+		ArrayList<String> tabs2 = new ArrayList<String> (driver.getWindowHandles());
+		driver.switchTo().window(tabs2.get(1));
+	   
+		//Fill customer's information
+		driver.findElement(By.xpath("//input[@class='input-form ng-pristine ng-untouched ng-scope ng-invalid ng-invalid-required']")).sendKeys("Tran");
+		driver.findElement(By.xpath("//input[@class='input-form input-no-margin ng-pristine ng-untouched ng-scope ng-invalid ng-invalid-required ng-valid-minlength ng-valid-maxlength']")).sendKeys("0942127129");
+		driver.findElement(By.xpath("//input[@class='input-form ng-pristine ng-untouched ng-scope ng-invalid ng-invalid-required ng-valid-email']")).sendKeys("bichphuong@gmail.com");
+		driver.findElement(By.xpath("//textarea[@class='input-form ng-pristine ng-untouched ng-valid ng-scope']")).sendKeys("phuongttb");
+	    
+	    //Select payment method - trip credit
+		driver.findElement(By.xpath(" //input[@name='Trip Credits' and value='Trip Credits']")).click();
+		assert driver.findElement(By.xpath("//input[@name='Trip Credits' and value='Trip Credits']")).isSelected();
+		}
 	
 
 	// select check-in and check-out date
