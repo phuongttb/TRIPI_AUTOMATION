@@ -20,7 +20,7 @@ public class BookerPartner {
 	WebDriver driver;
 	WebDriverWait wait;
 
-	@Test(enabled = true)
+	@Test(enabled = false)
 	public void TC_01_SearchFlight_RoundTrip() throws Exception {
 
 		String homePageUrl = driver.getCurrentUrl();
@@ -87,7 +87,9 @@ public class BookerPartner {
 		driver.findElement(By.xpath("//span[contains(text(),'Chọn vé này')]")).click();
 		driver.findElement(By.xpath("//span[contains(text(),'Chọn vé này')]")).click();
 		
-	
+	    //click on "Xác nhận chọn vé' button
+		driver.findElement(By.xpath("//span[contains(text(),'Xác nhận chọn vé')]")).click();
+		
 		// Navigate to previous page
 		driver.navigate().back();
 
@@ -143,7 +145,7 @@ public class BookerPartner {
 		}
 		// click on search button
 		driver.findElement(By.xpath("//button[@class='hotel-search-button btn btn-search']")).click();
-		Thread.sleep(5000);
+		Thread.sleep(10000);
 		
 		
 		//kiểm tra xem ở page title ở màn hình kết quả hotel trả ra có đúng không
@@ -152,6 +154,7 @@ public class BookerPartner {
 		System.out.println(homePageTitle);
 		System.out.println(homePageTitle.length());
 		Assert.assertEquals(homePageTitle, "Khách sạn ở Đà Nẵng - Trang 1");
+		
 		
 		//click on book button on search results 
 		driver.findElement(By.xpath("//span[contains(text(),'Đặt phòng')]")).click();
@@ -164,17 +167,19 @@ public class BookerPartner {
 		driver.switchTo().window(tabs1.get(1));
 		
 		//Click on book now button on hotel details
-		driver.findElement(By.xpath("//span[contains(text(),'Đặt ngay')]")).click();
+		driver.findElement(By.xpath("//div[@ng-if='filterByProvider']//div[@class='room-title ng-binding'][text()='DOUBLE DELUXE']/../../../div[2]//span[text()='Đặt ngay']")).click();
 		 
 		//open new tab
 		ArrayList<String> tabs2 = new ArrayList<String> (driver.getWindowHandles());
 		driver.switchTo().window(tabs2.get(1));
-	   
+	  		
+	
 		//Fill customer's information
-		driver.findElement(By.xpath("//input[@class='input-form ng-pristine ng-untouched ng-scope ng-invalid ng-invalid-required']")).sendKeys("Tran");
-		driver.findElement(By.xpath("//input[@class='input-form input-no-margin ng-pristine ng-untouched ng-scope ng-invalid ng-invalid-required ng-valid-minlength ng-valid-maxlength']")).sendKeys("0942127129");
-		driver.findElement(By.xpath("//input[@class='input-form ng-pristine ng-untouched ng-scope ng-invalid ng-invalid-required ng-valid-email']")).sendKeys("bichphuong@gmail.com");
-		driver.findElement(By.xpath("//textarea[@class='input-form ng-pristine ng-untouched ng-valid ng-scope']")).sendKeys("phuongttb");
+//		driver.findElement(By.xpath("//*[@data-ng-model='bookingInfo.customerInfo.name']")).sendKeys("Tran");
+		driver.findElement(By.xpath("//input[@name='name']")).sendKeys("Tran");
+		driver.findElement(By.xpath("//input[@placeholder='Số điện thoại']")).sendKeys("0942127129");
+		driver.findElement(By.xpath("//input[@placehoder='Địa chỉ email']")).sendKeys("bichphuong@gmail.com");
+		driver.findElement(By.xpath("//tetarea[@placeholder='Địa chỉ liên hệ']")).sendKeys("phuongttb");
 	    
 	    //Select payment method - trip credit
 		driver.findElement(By.xpath(" //input[@name='Trip Credits' and value='Trip Credits']")).click();
