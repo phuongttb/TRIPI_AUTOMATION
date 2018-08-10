@@ -24,11 +24,6 @@ public class BookerPartner {
 	@Test(enabled = true)
 	public void TC_01_SearchFlight_RoundTrip() throws Exception {
 
-//		String homePageUrl = driver.getCurrentUrl();
-//		Assert.assertEquals(homePageUrl, "https://www.tripi.vn/");
-//		driver.manage().window().maximize();
-//		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
-
 		// Click on "vé máy bay" tab
 		driver.findElement(By.xpath("//div[contains(text(),'Vé máy bay')]")).click();
 
@@ -62,42 +57,75 @@ public class BookerPartner {
 		WebElement dateWidget = driver
 				.findElement(By.cssSelector("div.hthsf-item:nth-child(5) > div:nth-child(2) > div:nth-child(1)"));
 		List<WebElement> columns = dateWidget.findElements(By.tagName("td"));
-		System.out.println("LEN:  " + columns.size());
+		System.out.println("No elements found:  " + columns.size());
 		for (WebElement cell : columns) {
-			if (cell.getText().equals("15")) {
+			if (cell.getText().equals("20")) {
 				cell.click();
 				break;
 			}
 		}
 
-		Thread.sleep(10000);
+		
 		// all fields filled in. Now click on search
 		WebElement searchbutton = driver
 				.findElement(By.xpath("//button[@class='flight-search-button btn btn-search']"));
 		searchbutton.click();
-		
-		
-		String errormssage = driver.findElement(By.xpath("//span[contains(text(),'Chưa chọn vé chiều đi')]")).getText();
-		 Assert.assertEquals("Chưa chọn vé chiều đi", errormssage);
-		 System.out.println(errormssage);
-		 
-		//check title page and print page title
-//		System.out.println("Check homepage title");
-//		String homePageTitle = driver.getTitle();
-//		System.out.println(homePageTitle);
-//    	System.out.println(homePageTitle.length());
-//		Assert.assertEquals(homePageTitle, "Vé máy bay Hà Nội - Tân Sơn Nhất (SGN) - Tripi.vn");
 		Thread.sleep(10000);
+		WebElement outboundTickets=driver.findElement(By.id("outBoundTickets"));
 		
-		//click on "chọn vé này" button
-//		driver.findElement(By.xpath("//span[contains(text(),'Chọn vé này')]")).click();
-//		driver.findElement(By.xpath("//span[contains(text(),'Chọn vé này')]")).click();
-		
-	    //click on "Xác nhận chọn vé' button
-//		driver.findElement(By.xpath("//span[contains(text(),'Xác nhận chọn vé')]")).click();
+		List<WebElement> tickets =outboundTickets.findElements(By.className("ticket"));
+		System.out.println("Size tickets "+tickets.size());
+		for(WebElement ticket: tickets) {
+			
+			String clazz = ticket.getAttribute("class");
+			System.out.println(clazz);
+			if( clazz.contains("ng-hide")) continue;
+			String agencyAirline = ticket.findElement(By.cssSelector("img[class='alogo']")).getAttribute("alt");
+			
+			List<WebElement> times = ticket.findElements(By.className("departure-time"));
+			String startDate = times.get(0).findElement(By.className("ticket-time")).getText();
+			String endDate = times.get(1).findElement(By.className("ticket-time")).getText();
+			System.out.println("============================");
+			System.out.println(agencyAirline);
+			System.out.println(startDate+"->"+endDate);
+			if(agencyAirline.equals("VietJet Air")) {
+				//day chinh cac ve Jetstar Airways
+				WebElement button = ticket.findElement(By.xpath("//button[@class='flight-select-single-ticket btn btn-xs btn-tripi']"));
+				button.click();
+				break;
+				
+			}
+			
+			WebElement inboundTickets=driver.findElement(By.id("inboundTickets"));
+			
+			List<WebElement> ticket2 =inboundTickets.findElements(By.className("ticket"));
+			System.out.println("Size tickets "+tickets.size());
+			for(WebElement ticket3: ticket2) {
+				
+				String clazz2 = ticket.getAttribute("class");
+				System.out.println(clazz);
+				if( clazz.contains("ng-hide")) continue;
+				String agencyAirline2 = ticket.findElement(By.cssSelector("img[class='alogo']")).getAttribute("alt");
+				if(agencyAirline.equals("VietJet Air")) {
+					//day chinh cac ve Jetstar Airways
+					WebElement button = ticket.findElement(By.xpath("//button[@class='flight-select-return-ticket']"));
+					button.click();
+					break;
+				
+				}
+		}
+           
+	
+	
+
+
+			 
+		Thread.sleep(10000);
+	
 		
 		// Navigate to previous page
 		driver.navigate().back();
+		}
 
 		// sau khoảng 10k miliseconds sẽ chạy tiếp testcase thứ 2
 //		wait = new WebDriverWait(driver, 10);
@@ -106,7 +134,7 @@ public class BookerPartner {
 	public void selectDate(String date) {
 		WebElement dateWidget = driver.findElement(By.className("startHoliday"));
 		List<WebElement> columns = dateWidget.findElements(By.tagName("td"));
-		System.out.println("LEN:  " + columns.size());
+		System.out.println("No elements found:  " + columns.size());
 		for (WebElement cell : columns) {
 			if (cell.getText().equals(date)) {
 				cell.click();
@@ -119,7 +147,7 @@ public class BookerPartner {
 
 	// SEARCH HOTEL_TESTSCRIPT (Return search results)
 
-	@Test(enabled = true)
+//	@Test(enabled = true)
 	public void TC_02_SearchHotel() throws Exception {
 
 		// click on Hotel tab
@@ -143,7 +171,7 @@ public class BookerPartner {
 
 		WebElement dateWidget = driver.findElement(By.cssSelector("div.date-picker-wrapper:nth-child(3)"));
 		List<WebElement> columns = dateWidget.findElements(By.tagName("td"));
-		System.out.println("LEN:  " + columns.size());
+		System.out.println("No elements found on date picker:  " + columns.size());
 		for (WebElement cell : columns) {
 			if (cell.getText().equals("15")) {
 				cell.click();
@@ -155,9 +183,9 @@ public class BookerPartner {
 		driver.findElement(By.xpath("//button[@class='hotel-search-button btn btn-search']")).click();
 		Thread.sleep(10000);
 		
-		driver.findElement(By.xpath("//button[contains(text(),'Thay đổi')]")).click();
-		 driver.findElement(By.xpath("//input[@id='hotel-autocomplete-input-value']")).sendKeys("Bình Thuận");
-		 driver.findElement(By.xpath("//span[contains(text(),'Tìm kiếm')]")).click();
+//		driver.findElement(By.xpath("//button[contains(text(),'Thay đổi')]")).click();
+//		 driver.findElement(By.xpath("//input[@id='hotel-autocomplete-input-value']")).sendKeys("Bình Thuận");
+//		 driver.findElement(By.xpath("//span[contains(text(),'Tìm kiếm')]")).click();
 		 
 		 Thread.sleep(10000);
 //		 String searchresults = driver.findElement(By.xpath("//div[contains(text(),'DOUBLE DELUXE')]")).getText();
@@ -219,7 +247,7 @@ public class BookerPartner {
 
 		WebElement startHoliday = driver.findElement(By.className("ng-scope"));
 		List<WebElement> columns = startHoliday.findElements(By.tagName("td"));
-		System.out.println("LEN:  " + columns.size());
+		System.out.println("No elements found:  " + columns.size());
 		for (WebElement cell : columns) {
 			if (cell.getText().equals(date)) {
 				cell.click();
@@ -230,7 +258,7 @@ public class BookerPartner {
 
 	}
 
-	@Test(enabled = true)
+//	@Test(enabled = true)
 	public void TC_03_SearchFligh_notsatisfysearchcondition() throws Exception {
 
 		// Click on "vé máy bay" tab
@@ -267,7 +295,7 @@ public class BookerPartner {
 		WebElement dateWidget = driver
 				.findElement(By.cssSelector("div.hthsf-item:nth-child(5) > div:nth-child(2) > div:nth-child(1)"));
 		List<WebElement> columns = dateWidget.findElements(By.tagName("td"));
-		System.out.println("LEN:  " + columns.size());
+		System.out.println("No elements found:  " + columns.size());
 		for (WebElement cell : columns) {
 			if (cell.getText().equals("15")) {
 				cell.click();
@@ -297,7 +325,7 @@ public class BookerPartner {
 	public void selectDate3(String date) {
 		WebElement dateWidget = driver.findElement(By.className("startHoliday"));
 		List<WebElement> columns = dateWidget.findElements(By.tagName("td"));
-		System.out.println("LEN:  " + columns.size());
+		System.out.println("No elements found:  " + columns.size());
 		for (WebElement cell : columns) {
 			if (cell.getText().equals(date)) {
 				cell.click();
@@ -306,63 +334,6 @@ public class BookerPartner {
 		}
 	}
 	
-	@Test(enabled = false)
-	public void TC_04_HotelSearchResultsnotsatisfysearchcondition() throws Exception {
-       
-		driver.navigate().to("https://www.tripi.vn/");
-		// click on Hotel tab
-		driver.findElement(By.xpath("//div[contains(text(),'Khách sạn')]")).click();
-
-		// select destination hotel
-		WebElement destination = driver.findElement(By.id("hotel-autocomplete-input-value"));
-		destination.sendKeys("Đà Nẵng");
-		Thread.sleep(2000);
-		destination.sendKeys(Keys.RETURN);
-		System.out.println("Test: " + destination.getText());
-
-		// click on check-in date
-		driver.findElement(By.xpath("//input[@id='hotel-check-in-value']")).click();
-
-		selectDate("10");
-
-		
-		// select check-out date
-		driver.findElement(By.xpath("//input[@id='hotel-check-out-value']")).click();
-
-		WebElement dateWidget = driver.findElement(By.cssSelector("div.date-picker-wrapper:nth-child(3)"));
-		List<WebElement> columns = dateWidget.findElements(By.tagName("td"));
-		System.out.println("LEN:  " + columns.size());
-		for (WebElement cell : columns) {
-			if (cell.getText().equals("15")) {
-				cell.click();
-				break;
-			}
-			
-		}
-		// click on search button
-		driver.findElement(By.xpath("//button[@class='hotel-search-button btn btn-search']")).click();
-		Thread.sleep(10000);
-		
-		// Navigate to previous page
-		driver.navigate().back();
-
-		}
-
-	// select check-in and check-out date
-	public void selectDatehotel3(String date) {
-
-		WebElement startHoliday = driver.findElement(By.className("ng-scope"));
-		List<WebElement> columns = startHoliday.findElements(By.tagName("td"));
-		System.out.println("LEN:  " + columns.size());
-		for (WebElement cell : columns) {
-			if (cell.getText().equals(date)) {
-				cell.click();
-				break;
-			}
-
-		}
-
-	}
 
 	// SEARCH TRIPI HOLIDAY_TESTSCRIPT
 
