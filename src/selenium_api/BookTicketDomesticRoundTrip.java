@@ -20,9 +20,18 @@ import org.testng.annotations.Test;
 public class FlightTestScript {
 	WebDriver driver;
 
+	// TÌM KIẾM VÀ BOOK VÉ MÁY BAY
 	@Test
-	@Parameters({ "flightfromairport", "flighttoairport", "flightcheckindate" ,"flightcheckoutdate" ,"selectagencyoutbound" ,"selectagencyintbound","passengerLastName1","passengerFirstName1", "passengerLastName2" ,"passengerFirstName2"})
-	public void TC_01_SearchAndtBookTicket_RoundTrip(String flightfromairport, String flighttoairport, String flightcheckindate , String flightcheckoutdate, String selectagencyoutbound ,String selectagencyintbound, String passengerLastName1, String passengerFirstName1, String passengerLastName2, String passengerFirstName2   ) throws Exception {
+	@Parameters({ "flightfromairport", "flighttoairport", "flightcheckindate", "flightcheckoutdate",
+			"selectagencyoutbound", "selectagencyintbound", "passengerLastName1", "passengerFirstName1",
+			"passengerLastName2", "passengerFirstName2", "gender", "gender1", "Passenpackage1", "contactInfolastName",
+			"contactInfofirstName", "contactInfoemail", "contactInfophone1", "gendercontact" })
+	public void TC_01_SearchAndtBookTicket_RoundTrip(String flightfromairport, String flighttoairport,
+			String flightcheckindate, String flightcheckoutdate, String selectagencyoutbound,
+			String selectagencyintbound, String passengerLastName1, String passengerFirstName1,
+			String passengerLastName2, String passengerFirstName2, String gender, String gender1, String Passenpackage1,
+			String contactInfolastName, String contactInfofirstName, String contactInfoemail, String contactInfophone1,
+			String gendercontact) throws Exception {
 
 		// Click on "vé máy bay" tab
 		driver.findElement(By.xpath("//div[contains(text(),'Vé máy bay')]")).click();
@@ -84,16 +93,16 @@ public class FlightTestScript {
 			if (agency.contains(selectagencyintbound)) {
 				WebElement selectBtnob = ticket.findElement(By.cssSelector(".flight-select-single-ticket"));
 				selectBtnob.click();
-				isSelected=true;
+				isSelected = true;
 				Thread.sleep(1000);
 				System.out.println(agency);
 				break;
 			}
 		}
-		if(!isSelected) {
+		if (!isSelected) {
 			Assert.fail("Dont have any Jetstar ticket");
 		}
-		// Chon ve chieu vess
+		// Chon ve chieu ves
 		WebElement inBoundTicketstab = driver.findElement(By.cssSelector("div.menu-item:nth-child(3)"));
 		inBoundTicketstab.click();
 		Thread.sleep(5000);
@@ -116,77 +125,87 @@ public class FlightTestScript {
 			}
 
 		}
-		// click vào nút confirm button 
+		// click vào nút confirm button
 		WebElement comfirmbtn = driver.findElement(By.cssSelector(".flight-search-booking-ticket"));
 		comfirmbtn.click();
 		Thread.sleep(10000);
 		ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
 		driver.switchTo().window(tabs.get(0));
-     		
-		Thread.sleep(3000);
-		//Khach hang 1
+
+		Thread.sleep(1000);
+		// Khach hang 1
 
 		driver.findElement(By.cssSelector("input[ng-model='adult.lastName']")).sendKeys(passengerLastName1);
-		
 		Thread.sleep(1000);
 		driver.findElement(By.xpath("//input[contains(@class,'first-name')]")).sendKeys(passengerFirstName1);
-	
-		Select dropdown = new Select(driver.findElement(By.xpath("//select[@ng-model='adult.gender']")));
-		dropdown.selectByVisibleText("Nữ");
-		Thread.sleep(1000);
-		
-		//Khach hang thu 2
-		WebElement secondGuestDiv = driver.findElement(By.cssSelector("#adult-1"));	
-		//Nhap lastname	
-		WebElement lastNametext2 = secondGuestDiv.findElement(By.cssSelector(".form-control.last-name"));	
+
+		// CHỌN GIỚI TÍNH KHÁCH HÀNG THỨ NHẤT
+		new Select(driver.findElement(By.xpath("(//select[@ng-model='adult.gender'])[1]"))).selectByVisibleText(gender);
+
+		// NHẬP TÊN
+		WebElement secondGuestDiv = driver.findElement(By.cssSelector("#adult-1"));
+		// Nhap lastname
+		WebElement lastNametext2 = secondGuestDiv.findElement(By.cssSelector(".form-control.last-name"));
 		lastNametext2.clear();
-		lastNametext2.sendKeys(passengerLastName2);	
+		lastNametext2.sendKeys(passengerLastName2);
 
-		//Nhap firstname						
-		WebElement firstNametext2 = secondGuestDiv.findElement(By.cssSelector(".form-control.first-name"));	
+		// NHẬP HỌ TÊN
+		WebElement firstNametext2 = secondGuestDiv.findElement(By.cssSelector(".form-control.first-name"));
 		firstNametext2.clear();
-		firstNametext2.sendKeys(passengerLastName2)	;
-		//Chon gioi tinh	
-		WebElement genderOfFirstGuestDiv2 = secondGuestDiv.findElement(By.cssSelector(".form-control.gender"));	
-		Select dropdown2= new Select(genderOfFirstGuestDiv2);	
-		dropdown2.selectByVisibleText("Nữ");
-		
-		
+		firstNametext2.sendKeys(passengerLastName2);
 
-		//mua thêm hành lý chieu di
-		Select dropdownpackage1 = new Select(
-				driver.findElement(By.xpath("//select[@ng-model='adult.outboundBaggageId']")));
-		dropdownpackage1.selectByVisibleText("Gói (Bag) 15 kg - 160.000đ");
-		Thread.sleep(3000);
-		
-		//mua thêm hành lý chieu ve
+		// NHẬP GIỚI TÍNH KHÁCH HÀNG 2
+		new Select(driver.findElement(By.xpath("(//select[@ng-model='adult.gender'])[2]")))
+				.selectByVisibleText(gender1);
 
-//		Select dropdownpackage2 = new Select(
-//				driver.findElement(By.xpath("//select[@ng-model='adult.intboundBaggageId']")));
-//		dropdownpackage2.selectByVisibleText("Gói (Bag) 15 kg - 160.000đ");
-//		Thread.sleep(1000);
-//
-//		
-		
-	    //Thông tin liên hệ  
-	    Select sexdrop=new Select(driver.findElement(By.id("ticket-booking-select-title")));
-	    sexdrop.selectByVisibleText("Ông");
-		driver.findElement(By.xpath("//input[@ng-model='contactInfo.lastName']")).sendKeys("Phan Đình");
-		driver.findElement(By.xpath("//input[@ng-model='contactInfo.firstName']")).sendKeys("Tứ");
-		driver.findElement(By.xpath("//input[@ng-model='contactInfo.email']")).sendKeys("bichphuong@gmail.com");
-		driver.findElement(By.xpath("//input[@ng-model='contactInfo.phone1']")).sendKeys("0942127129");
+		// MUA HÀNH LÝ CHIỀU ĐI
+		WebElement selectBox = driver.findElement(By.xpath("//select[@ng-model='adult.outboundBaggageId']"));
+		Select X = new Select(selectBox);
+		List<WebElement> options = selectBox.findElements(By.tagName("option"));
+		int index = 0;
+		for (WebElement option : options) {
+			System.out.println(option.getText());
+			String value = option.getText();
+			if (value.contains(Passenpackage1)) {
+				X.selectByIndex(index);
+
+			}
+			index++;
+		}
+
+		// MUA HÀNH LÝ CHIỀU VỀ
+
+		WebElement baggagedrop = driver.findElement(By.xpath("//select[@ng-model='adult.inboundBaggageId']"));
+		Select baggagevalue = new Select(baggagedrop);
+		List<WebElement> valuedrop = baggagedrop.findElements(By.tagName("option"));
+		int index3 = 0;
+		for (WebElement listvalue : valuedrop) {
+			System.out.println(listvalue.getText());
+			String value = listvalue.getText();
+			if (value.contains("20 kg")) {
+				baggagevalue.selectByIndex(index3);
+			}
+			index3++;
+		}
+
+		// NHẬP THÔNG TIN LIÊN HỆ
+		new Select(driver.findElement(By.id("ticket-booking-select-title"))).selectByVisibleText("Ông");
+		driver.findElement(By.xpath("//input[@ng-model='contactInfo.lastName']")).sendKeys(contactInfolastName);
+		driver.findElement(By.xpath("//input[@ng-model='contactInfo.firstName']")).sendKeys(contactInfofirstName);
+		driver.findElement(By.xpath("//input[@ng-model='contactInfo.email']")).sendKeys(contactInfoemail);
+		driver.findElement(By.xpath("//input[@ng-model='contactInfo.phone1']")).sendKeys(contactInfophone1);
 
 		// //Select payment method - trip credit
-		WebElement paymentmethod=driver.findElement(By.cssSelector("#payment-method-3"));
-		paymentmethod.click();
-		Thread.sleep(10000);
-		
-		WebElement paymentbtn=driver.findElement(By.cssSelector(".flight-payment-button"));
-		paymentbtn.click();
-		Thread.sleep(5000);
-		
-		WebElement confirmbtn=driver.findElement(By.cssSelector(".btn-success"));
-		confirmbtn.click();
+				WebElement paymentmethod = driver.findElement(By.cssSelector("#payment-method-3"));
+				paymentmethod.click();
+				Thread.sleep(1000);
+
+				WebElement paymentbtn = driver.findElement(By.cssSelector(".flight-payment-button"));
+				paymentbtn.click();
+				Thread.sleep(2000);
+
+				WebElement confirmbtn = driver.findElement(By.cssSelector(".btn-success"));
+				confirmbtn.click();
 
 	}
 
@@ -204,25 +223,25 @@ public class FlightTestScript {
 	// SEARCH FLIGHT : SEARCH RESULTS NOT SATISFY SEARCH CONDITION
 
 	@Test(enabled = false)
-	public void TC_03_SearchFligh_notsatisfysearchcondition() throws Exception {
+	@Parameters({ "flightfromairport", "flighttoairport", "flightcheckindate", "flightcheckoutdate",
+			"selectagencyoutbound", "selectagencyintbound" })
+	public void TC_03_SearchFligh_notsatisfysearchcondition(String flightfromairport, String flighttoairport,
+			String flightcheckindate, String flightcheckoutdate) throws Exception {
 
 		// Click on "vé máy bay" tab
 		driver.navigate().to("https://www.tripi.vn/");
-		// driver.findElement(By.xpath("//div[contains(text(),'Vé máy bay')]")).click();
 
 		// Enter "From" station code eg.HAN
 		WebElement eFromAirport = driver.findElement(By.id("flight-from-airport-value"));
-		eFromAirport.sendKeys("CGK");
+		eFromAirport.sendKeys(flightfromairport);
 		Thread.sleep(2000);
 		eFromAirport.sendKeys(Keys.RETURN);
-		System.out.println("Test: " + eFromAirport.getText());
 
 		// Enter "To" station code eg.SGN
 		WebElement eToAirport = driver.findElement(By.id("flight-to-airport-value"));
-		eToAirport.sendKeys("KUL");
+		eToAirport.sendKeys(flighttoairport);
 		Thread.sleep(2000);
 		eToAirport.sendKeys(Keys.RETURN);
-		System.out.println("Test: " + eToAirport.getText());
 
 		// Click on RoundTrip tab
 		driver.findElement(By.xpath("//span[contains(text(),'Khứ hồi')]")).click();
@@ -232,8 +251,7 @@ public class FlightTestScript {
 		WebElement depaturedate = driver.findElement(By.xpath("//input[@id='flight-checkin-date']"));
 		depaturedate.click();
 
-		selectDate("14");
-		// selectDate("15");
+		selectDate(flightcheckindate);
 		WebElement returnDate = driver.findElement(By.xpath("//input[@id='flight-checkout-date']"));
 		returnDate.click();
 
@@ -242,7 +260,7 @@ public class FlightTestScript {
 		List<WebElement> columns = dateWidget.findElements(By.tagName("td"));
 		System.out.println("No elements found:  " + columns.size());
 		for (WebElement cell : columns) {
-			if (cell.getText().equals("15")) {
+			if (cell.getText().equals(flightcheckoutdate)) {
 				cell.click();
 				break;
 			}
@@ -279,24 +297,22 @@ public class FlightTestScript {
 	// SEARCH TRIPI HOLIDAY_TESTSCRIPT
 
 	@Test(enabled = false)
-	public void TC_02_SearchFlightholiday() throws Exception {
-		System.out.println("Check homepage title");
-		String homePageTitle = driver.getTitle();
-		Assert.assertEquals(homePageTitle, "Tripi.vn - Đặt vé máy bay và khách sạn thuận tiện với giá tốt nhất");
+	@Parameters({ "flightfromairport", "flighttoairport", "flightcheckindate", "flightcheckoutdate",
+			"selectagencyoutbound", "selectagencyintbound" })
+	public void TC_02_SearchFlightholiday(String flightfromairport, String flighttoairport, String flightcheckindate,
+			String flightcheckoutdate) throws Exception {
 
-		System.out.println("Check homepage url");
-		String homePageUrl = driver.getCurrentUrl();
-		Assert.assertEquals(homePageUrl, "https://dev.tripi.vn/");
+		driver.get("https://www.tripi.vn/");
 
 		// Chọn chiều đi
 		WebElement eFromAirport = driver.findElement(By.id("tripi-holiday-from-airport-value"));
-		eFromAirport.sendKeys("Hồ chí Minh");
+		eFromAirport.sendKeys(flightfromairport);
 		Thread.sleep(2000);
 		eFromAirport.sendKeys(Keys.RETURN);
 		System.out.println("Test: " + eFromAirport.getText());
 		// Chọn chiều về
 		WebElement eToAirport = driver.findElement(By.id("tripi-holiday-to-airport-value"));
-		eToAirport.sendKeys("Đà Nẵng");
+		eToAirport.sendKeys(flighttoairport);
 		Thread.sleep(2000);
 		eToAirport.sendKeys(Keys.RETURN);
 		System.out.println("Test: " + eToAirport.getText());

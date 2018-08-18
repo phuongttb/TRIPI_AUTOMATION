@@ -10,6 +10,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -122,33 +123,68 @@ public class BookerPartner {
      		
 		Thread.sleep(3000);
 		//Khach hang 1
-//		driver.findElement(By.xpath("//input[contains(@class,'last-name')]")).sendKeys("Phuong");
-		driver.findElement(By.cssSelector("input[ng-model='adult.lastName']")).sendKeys("Phuong");
+
+		driver.findElement(By.cssSelector("input[ng-model='adult.lastName']")).sendKeys("Trần");
 		
-		Thread.sleep(10000);
-		driver.findElement(By.xpath("//input[contains(@class,'first-name')]")).sendKeys("Tran");
-		WebElement selectsex = driver.findElement(By.cssSelector(".gender"));
-		List <WebElement> options=selectsex.findElements(By.cssSelector(".gender > option:nth-child(2)"));
-		for (WebElement option : options)
-			if ("Nam".equals(option.getText()))
-				option.click();
+		Thread.sleep(1000);
+		driver.findElement(By.xpath("//input[contains(@class,'first-name')]")).sendKeys("Phượng");
+	
+		Select dropdown = new Select(driver.findElement(By.xpath("//select[@ng-model='adult.gender']")));
+		dropdown.selectByVisibleText("Nữ");
+		Thread.sleep(1000);
 		
 		//Khach hang thu 2
-		driver.findElement(By.xpath("//input[contains(@class,'first-name')]")).sendKeys("Tran");
-		WebElement selectsex1 = driver.findElement(By.cssSelector(".gender"));
-		List <WebElement> options1=selectsex1.findElements(By.cssSelector(".#ticket-booking-select-title > option:nth-child(2)"));
-		for (WebElement option : options1)
-			if ("Nữ".equals(option.getText()))
-				option.click();
-		Thread.sleep(4000);
-		driver.findElement(By.xpath("//input[@ng-model='adult.firstName']")).sendKeys("phuong");
-		driver.findElement(By.xpath("//input[@placeholder='Số điện thoại']")).sendKeys("0942127129");
-		driver.findElement(By.xpath("//input[@placehoder='Địa chỉ email']")).sendKeys("bichphuong@gmail.com");
-		driver.findElement(By.xpath("//tetarea[@placeholder='Địa chỉ liên hệ']")).sendKeys("phuongttb");
+		WebElement secondGuestDiv = driver.findElement(By.cssSelector("#adult-1"));	
+		//Nhap lastname	
+		WebElement lastNametext2 = secondGuestDiv.findElement(By.cssSelector(".form-control.last-name"));	
+		lastNametext2.clear();
+		lastNametext2.sendKeys("Phan Đình");	
+
+		//Nhap firstname						
+		WebElement firstNametext2 = secondGuestDiv.findElement(By.cssSelector(".form-control.first-name"));	
+		firstNametext2.clear();
+		firstNametext2.sendKeys("Đạt")	;
+		//Chon gioi tinh	
+		WebElement genderOfFirstGuestDiv2 = secondGuestDiv.findElement(By.cssSelector(".form-control.gender"));	
+		Select dropdown2= new Select(genderOfFirstGuestDiv2);	
+		dropdown2.selectByVisibleText("Nữ");
+		
+		
+
+		//mua thêm hành lý chieu di
+		Select dropdownpackage1 = new Select(
+				driver.findElement(By.xpath("//select[@ng-model='adult.outboundBaggageId']")));
+		dropdownpackage1.selectByVisibleText("Gói (Bag) 15 kg - 160.000đ");
+		Thread.sleep(3000);
+		
+		//mua thêm hành lý chieu ve
+
+//		Select dropdownpackage2 = new Select(
+//				driver.findElement(By.xpath("//select[@ng-model='adult.intboundBaggageId']")));
+//		dropdownpackage2.selectByVisibleText("Gói (Bag) 15 kg - 160.000đ");
+//		Thread.sleep(1000);
+//
+//		
+		
+	    //Thông tin liên hệ  
+	    Select sexdrop=new Select(driver.findElement(By.id("ticket-booking-select-title")));
+	    sexdrop.selectByVisibleText("Ông");
+		driver.findElement(By.xpath("//input[@ng-model='contactInfo.lastName']")).sendKeys("Phan Đình");
+		driver.findElement(By.xpath("//input[@ng-model='contactInfo.firstName']")).sendKeys("Tứ");
+		driver.findElement(By.xpath("//input[@ng-model='contactInfo.email']")).sendKeys("bichphuong@gmail.com");
+		driver.findElement(By.xpath("//input[@ng-model='contactInfo.phone1']")).sendKeys("0942127129");
 
 		// //Select payment method - trip credit
-		driver.findElement(By.xpath(" //input[@name='Trip Credits' and value='Trip Credits']")).click();
-		assert driver.findElement(By.xpath("//input[@name='Trip Credits' and value='Trip Credits']")).isSelected();
+		WebElement paymentmethod=driver.findElement(By.cssSelector("#payment-method-3"));
+		paymentmethod.click();
+		Thread.sleep(10000);
+		
+		WebElement paymentbtn=driver.findElement(By.cssSelector(".flight-payment-button"));
+		paymentbtn.click();
+		Thread.sleep(5000);
+		
+		WebElement confirmbtn=driver.findElement(By.cssSelector(".btn-success"));
+		confirmbtn.click();
 
 	}
 
@@ -162,6 +198,77 @@ public class BookerPartner {
 			}
 		}
 	}
+	
+
+	// SEARCH FLIGHT : SEARCH RESULTS and filter
+
+	@Test(enabled = false)
+	public void TC_04_SearchFlighandFilter() throws Exception {
+
+		
+		driver.navigate().to("https://www.tripi.vn/");
+		// Enter "From" station code eg.HAN
+		WebElement eFromAirport = driver.findElement(By.id("flight-from-airport-value"));
+		eFromAirport.sendKeys("HAN");
+		Thread.sleep(2000);
+		eFromAirport.sendKeys(Keys.RETURN);
+
+		// Enter "To" station code eg.SGN
+		WebElement eToAirport = driver.findElement(By.id("flight-to-airport-value"));
+		eToAirport.sendKeys("SGN");
+		Thread.sleep(2000);
+		eToAirport.sendKeys(Keys.RETURN);
+		
+		// Click on RoundTrip tab
+		driver.findElement(By.xpath("//span[contains(text(),'Khứ hồi')]")).click();
+		System.out.print(new Date());
+
+		// click on Departure date
+		WebElement depaturedate = driver.findElement(By.xpath("//input[@id='flight-checkin-date']"));
+		depaturedate.click();
+
+		selectDate("14");
+		WebElement returnDate = driver.findElement(By.xpath("//input[@id='flight-checkout-date']"));
+		returnDate.click();
+
+		WebElement dateWidget = driver
+				.findElement(By.cssSelector("div.hthsf-item:nth-child(5) > div:nth-child(2) > div:nth-child(1)"));
+		List<WebElement> columns = dateWidget.findElements(By.tagName("td"));
+		for (WebElement cell : columns) {
+			if (cell.getText().equals("15")) {
+				cell.click();
+				break;
+			}
+		}
+
+		Thread.sleep(10000);
+		// all fields filled in. Now click on search
+		WebElement searchbutton = driver
+				.findElement(By.xpath("//button[@class='flight-search-button btn btn-search']"));
+		searchbutton.click();
+
+		Thread.sleep(10000);
+
+		String errormssage = driver.findElement(By.xpath("//span[contains(text(),'Không có chuyến bay')]")).getText();
+		Assert.assertEquals("Không có chuyến bay", errormssage);
+		System.out.println(errormssage);
+
+		// Navigate to previous page
+		driver.navigate().back();
+	}
+
+	public void selectDate3(String date) {
+		WebElement dateWidget = driver.findElement(By.className("startHoliday"));
+		List<WebElement> columns = dateWidget.findElements(By.tagName("td"));
+		System.out.println("No elements found:  " + columns.size());
+		for (WebElement cell : columns) {
+			if (cell.getText().equals(date)) {
+				cell.click();
+				break;
+			}
+		}
+	}
+
 
 	// SEARCH FLIGHT : SEARCH RESULTS NOT SATISFY SEARCH CONDITION
 
