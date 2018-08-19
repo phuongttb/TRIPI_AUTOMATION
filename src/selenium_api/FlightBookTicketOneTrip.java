@@ -112,12 +112,13 @@ public class FlightBookTicketOneTrip {
 			ArrayList<String> paymenttab = new ArrayList<String>(driver.getWindowHandles());
 			driver.switchTo().window(paymenttab.get(0));
 			Thread.sleep(3000);
+			
+			System.out.println("Đi tới cổng thanh toán thành công !");
 	}
 	
 	public void selectdatepicker(String date) {
 		WebElement dateWidget = driver.findElement(By.className("startHoliday"));
 		List<WebElement> columns = dateWidget.findElements(By.tagName("td"));
-		System.out.println("No elements found:  " + columns.size());
 		for (WebElement cell : columns) {
 			if (cell.getText().equals(date)) {
 				cell.click();
