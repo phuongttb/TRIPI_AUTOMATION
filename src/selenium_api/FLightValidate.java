@@ -38,14 +38,8 @@ public class FLightValidate {
 
 		WebElement depaturedate = driver.findElement(By.xpath("//input[@id='flight-checkin-date']"));
 		depaturedate.click();
-		WebElement dateWidget=driver.findElement(By.cssSelector(".dropdown-menu"));
-		List<WebElement> columns = dateWidget.findElements(By.tagName("td"));
-		for (WebElement cell : columns) {
-			if (cell.getText().equals(flightcheckindatev)) {
-				cell.click();
-				break;
-			}
-		}
+		selectdatepicker(flightcheckindatev);
+		
 
 		WebElement searchbutton = driver
 				.findElement(By.xpath("//button[@class='flight-search-button btn btn-search']"));
@@ -57,7 +51,16 @@ public class FLightValidate {
 
 		}
 	
-	
+	public void selectdatepicker(String date) {
+		WebElement dateWidget = driver.findElement(By.className("startHoliday"));
+		List<WebElement> columns = dateWidget.findElements(By.tagName("td"));
+		for (WebElement cell : columns) {
+			if (cell.getText().equals(date)) {
+				cell.click();
+				break;
+			}
+		}
+		}
  
 	@BeforeClass
 	public void beforeClass() {
