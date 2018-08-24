@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Parameterization Test Suite">
+	<test name="Testing Parameterization">
+		<classes>
+			<class name="selenium_api.TestscriptHotel">
+				<methods>
+					<include name="TC_02_SearchHotel2">
+						<parameter name='autocompletesearch' value="Đà Nẵng"></parameter>
+						<parameter name='checkindate' value="25"></parameter>
+						<parameter name="checkoutdate" value="30"></parameter>				
+					</include>
+
+				</methods>
+			</class>
+		</classes>
+	</test> <!-- Test -->
+</suite> <!-- Suite -->
