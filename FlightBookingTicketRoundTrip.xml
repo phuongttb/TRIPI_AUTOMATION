@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Parameterization Test Suite">
+	<test name="Testing Parameterization">
+		<classes>
+			<class name="selenium_api.BookTicketDomesticRoundTrip">
+				<methods>
+					<include name="TC_01_SearchAndtBookTicket_RoundTrip">
+						<parameter name='flightfromairport' value="HAN"></parameter>
+						<parameter name='flighttoairport' value="SGN"></parameter>
+						<parameter name="flightcheckindate" value="17"></parameter>
+						<parameter name="flightcheckoutdate" value="20"></parameter>
+						<parameter name="selectagencyoutbound" value="VietJet Air"></parameter>
+						<parameter name="selectagencyintbound" value="VietJet Air"></parameter>
+						<parameter name="passengerLastName1" value="Tran"></parameter>
+						<parameter name="passengerFirstName1" value="Bich Phuong"></parameter>
+						<parameter name="gender" value="Nữ"></parameter>
+						<parameter name="Passenpackage1" value="Gói (Bag) 15 kg - 160.000đ"></parameter>
+						<parameter name="passengerLastName2" value="Phan"></parameter>
+						<parameter name="passengerFirstName2" value="Dinh Dat"></parameter>
+						<parameter name="gender1" value="Nữ"></parameter>
+						<parameter name="gendercontact" value="Ông"></parameter>
+						<parameter name="contactInfolastName" value="Phand Dinh"></parameter>
+						<parameter name="contactInfofirstName" value="Tu"></parameter>
+						<parameter name="contactInfoemail" value="bichphuong@gmail.com"></parameter>
+						<parameter name="contactInfophone1" value="0942127129"></parameter>
+						
+					</include>
+				</methods>
+			</class>
+		</classes>
+	</test> <!-- Test -->
+</suite> <!-- Suite -->
