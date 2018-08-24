@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Parameterization Test Suite">
+	<test name="Testing Parameterization">
+		<classes>
+			<class name="selenium_api.FlightBookTicketOneTrip">
+				<methods>
+					<include name="TC_01_BookingTicketOneTrip">
+						<parameter name='flightfromairportv' value="HAN"></parameter>
+						<parameter name='flighttoairportv' value="SGN"></parameter>
+						<parameter name="flightcheckindatev" value="27"></parameter>	
+						<parameter name="selectagencyintbound" value="Jetstar Airways"></parameter>		
+						<parameter name="LastName" value="Nora"></parameter>
+						<parameter name="FirstName" value="Tran"></parameter>		
+						<parameter name="Baggage" value="Gói (Bag) 15 kg - 160.000đ"></parameter>
+						<parameter name="Gender" value="Nữ"></parameter>
+						<parameter name="GenderContact" value="Bà"></parameter>		
+						<parameter name="LastNameContact" value="Lyly"></parameter>
+						<parameter name="FirstNameContact" value="Tran"></parameter>		
+						<parameter name="Email" value="phuongttb@gmail.com"></parameter>
+						<parameter name="phone" value="0912345678"></parameter>	
+					</include>
+
+				</methods>
+			</class>
+		</classes>
+	</test> <!-- Test -->
+</suite> <!-- Suite -->
