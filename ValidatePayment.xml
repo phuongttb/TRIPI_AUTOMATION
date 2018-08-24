@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Parameterization Test Suite">
+	<test name="Testing Parameterization">
+		<classes>
+			<class name="selenium_api.ValidatePayment">
+				<methods>
+				<include name="TC_ValidatLetBlankCustomer">
+					</include>
+					<include name="TC_WithoutSelectPaymentMethod">
+						<parameter name='LastName_payment' value="Tran"></parameter>
+						<parameter name='FirstName_payment' value="Phuong"></parameter>
+						<parameter name='Gender_payment' value="Nữ"></parameter>	
+						<parameter name='Baggage_payment' value="Nữ"></parameter>	
+						<parameter name='GenderContact_pay' value="Bà"></parameter>		
+						<parameter name='LastNameContact_pay' value="Phan Dinh"></parameter>
+						<parameter name='FirstNameContact_pay' value="Tu"></parameter>	
+						<parameter name='email_contact' value="phuong@gmail.com"></parameter>	
+						<parameter name='phone_contact' value="097759715"></parameter>			
+		
+					</include>
+				
+					<include name="TC_TC_ValidateVoucherCode">
+						<parameter name='vouchercode' value="ddddd"></parameter>		
+					</include>
+					
+				</methods>
+			</class>
+		</classes>
+	</test> <!-- Test -->
+</suite> <!-- Suite -->
