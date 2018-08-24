@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Parameterization Test Suite">
+	<test name="Testing Parameterization">
+		<classes>
+			<class name="selenium_api.Login">
+				<methods>
+					<include name="TC_01_Filterorder">
+						<parameter name='username' value="0988100942"></parameter>
+						<parameter name='password' value="123456"></parameter>
+						<parameter name='orderid' value="122397"></parameter>					
+					</include>
+					
+				</methods>
+			</class>
+		</classes>
+	</test> <!-- Test -->
+</suite> <!-- Suite -->
