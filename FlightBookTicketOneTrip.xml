@@ -8,7 +8,7 @@
 					<include name="TC_01_BookingTicketOneTrip">
 						<parameter name='flightfromairportv' value="HAN"></parameter>
 						<parameter name='flighttoairportv' value="SGN"></parameter>
-						<parameter name="flightcheckindatev" value="27"></parameter>	
+						<parameter name="flightcheckindatev" value="31"></parameter>	
 						<parameter name="selectagencyintbound" value="Jetstar Airways"></parameter>		
 						<parameter name="LastName" value="Nora"></parameter>
 						<parameter name="FirstName" value="Tran"></parameter>		

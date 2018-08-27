@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Parameterization Test Suite">
+	<test name="Testing Parameterization">
+		<classes>
+			<class name="selenium_api.ValidateLoginForm">
+				<methods>
+					<include name="TC_01_Filterorder">
+						<parameter name='username' value="0912027128"></parameter>
+						<parameter name='password' value="123456"></parameter>		
+						<parameter name='expectedOutput' value=""></parameter>		
+					</include>
+					<include name="TC_01_Filterorder">
+						<parameter name='username' value="012345"></parameter>
+						<parameter name='password' value="123456"></parameter>				
+					</include>
+				</methods>
+			</class>
+		</classes>
+	</test> <!-- Test -->
+</suite> <!-- Suite -->

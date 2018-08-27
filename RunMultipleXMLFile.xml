@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="MultipleSuite">
+<suite-files>
+    <suite-file path="FilterOrderCode.xml"></suite-file>
+    <suite-file path="FlightBookTicketOneTrip.xml"></suite-file>
+    <suite-file path="ValidatePayment.xml"></suite-file>
+</suite-files>
+</suite>

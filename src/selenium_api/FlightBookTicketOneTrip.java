@@ -75,7 +75,7 @@ public class FlightBookTicketOneTrip {
 		driver.switchTo().window(tabs.get(0));
 		// Thread.sleep(1000);
 		// Fill thông tin khách hàng
-		driver.findElement(By.cssSelector("input[ng-model='adult.lastName']")).sendKeys(LastName);
+		driver.findElement(By.xpath("//input[@ng-model='adult.lastName']")).sendKeys(LastName);
 		Thread.sleep(1000);
 		driver.findElement(By.xpath("//input[contains(@class,'first-name')]")).sendKeys(FirstName);
 		// CHỌN GIỚI TÍNH KHÁCH HÀNG
@@ -108,6 +108,10 @@ public class FlightBookTicketOneTrip {
 		WebElement paymentbtn = driver.findElement(By.cssSelector(".flight-payment-button"));
 		paymentbtn.click();
 		Thread.sleep(2000);
+		
+//		//Không chọn mua bảo hiểm
+//		WebElement cancelinsurrance=driver.findElement(By.cssSelector(".default-cancel-button"));
+//		cancelinsurrance.click();
 
 		WebElement confirmbtn = driver.findElement(By.cssSelector(".btn-success"));
 		confirmbtn.click();
@@ -124,10 +128,6 @@ public class FlightBookTicketOneTrip {
 		System.out.print("Đi tới cổng thanh toán thành công");
 		Assert.assertEquals(redirectURL, true);
 		
-//
-//		ArrayList<String> paymenttab = new ArrayList<String>(driver.getWindowHandles());
-//		driver.switchTo().window(paymenttab.get(0));
-//		Thread.sleep(10000);
 		
 	}
 

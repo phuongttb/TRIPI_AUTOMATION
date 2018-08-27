@@ -149,6 +149,7 @@ public class SearchTicketDomestic {
 			if (cell.getText().equals(flightcheckoutdate2)) {
 				cell.click();
 				break;
+				
 			}
 		}
 		Thread.sleep(2000);
@@ -158,7 +159,7 @@ public class SearchTicketDomestic {
 		searchbutton.click();
 
 		Thread.sleep(4000);
-		System.out.println("Kiem tra danh sach ve tra ve co du ve cua 3 hang VNA, VJ, JS hay khong");
+		System.out.println("Kiem tra danh sach ve tra ve co du ve cua 3 hang VNA, VJ, JS");
 		WebElement outBoundTicketsDiv = driver.findElement(By.cssSelector("#outBoundTickets"));
 		List<WebElement> outboundTickets = outBoundTicketsDiv.findElements(By.cssSelector(".ticket-info"));
 		int jetstarNum = 0;

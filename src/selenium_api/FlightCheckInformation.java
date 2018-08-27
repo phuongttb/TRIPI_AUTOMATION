@@ -1,5 +1,6 @@
 package selenium_api;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -8,50 +9,71 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-public class FLightValidate {
+public class FlightCheckInformation {
 	WebDriver driver;
-	
+
 	@Test()
-	@Parameters({ "flightfromairportv", "flighttoairportv", "flightcheckindatev" })
-	public void TC_01_Validatesamedestination(String flightfromairportv, String flighttoairportv,
-			String flightcheckindatev) throws Exception {
+	@Parameters({ "flight_fromairport", "flight_toairport", "flight_checkindate", "selectagencyintbound" })
+	public void TC_Flight_CheckAllInformation(String flight_fromairport, String flight_toairport,
+			String flight_checkindate, String selectagencyintbound) throws Exception {
 
 		driver.findElement(By.xpath("//div[contains(text(),'Vé máy bay')]")).click();
-		
+
 		WebElement eFromAirport = driver.findElement(By.id("flight-from-airport-value"));
-		eFromAirport.sendKeys(flightfromairportv);
+		eFromAirport.sendKeys(flight_fromairport);
 		Thread.sleep(2000);
 		eFromAirport.sendKeys(Keys.RETURN);
 
-
 		WebElement eToAirport = driver.findElement(By.id("flight-to-airport-value"));
-		eToAirport.sendKeys(flighttoairportv);
+		eToAirport.sendKeys(flight_toairport);
 		Thread.sleep(2000);
 		eToAirport.sendKeys(Keys.RETURN);
-		
-		
 
 		WebElement depaturedate = driver.findElement(By.xpath("//input[@id='flight-checkin-date']"));
 		depaturedate.click();
-		selectdatepicker(flightcheckindatev);
-		
+		selectdatepicker(flight_checkindate);
 
 		WebElement searchbutton = driver
 				.findElement(By.xpath("//button[@class='flight-search-button btn btn-search']"));
 		searchbutton.click();
 		Thread.sleep(2000);
-		String errormssage = driver.findElement(By.xpath("//div[@data-ng-bind-html='message']")).getText();
-		Assert.assertEquals("Điểm đến không được trùng với điểm khởi hành. Vui lòng lựa chọn lại.", errormssage);
-		System.out.println(errormssage);
 
+		WebElement outBoundTicketsDiv = driver.findElement(By.cssSelector("#outBoundTickets"));
+		List<WebElement> outboundTickets = outBoundTicketsDiv.findElements(By.cssSelector(".ticket-info"));
+		boolean Selected = false;
+		for (WebElement tickets : outboundTickets) {
+			WebElement logo = tickets.findElement(By.cssSelector(".alogo"));
+			String agency = logo.getAttribute("alt");
+
+			if (agency.contains(selectagencyintbound)) {
+				WebElement selectBtn = tickets.findElement(By.cssSelector(".flight-select-single-ticket"));
+				selectBtn.click();
+				Selected = true;
+				break;
+			}
 		}
-	
+		if (!Selected) {
+			Assert.fail("Không có vé. Vui lòng chọn vé khác!");
+		}
+		
+		
+		
+		
+		
+		
+		// Click on confirm button
+		WebElement comfirmbtn = driver.findElement(By.cssSelector(".flight-search-booking-ticket"));
+		comfirmbtn.click();
+		Thread.sleep(10000);	
+	}
+
 	public void selectdatepicker(String date) {
 		WebElement dateWidget = driver.findElement(By.className("startHoliday"));
 		List<WebElement> columns = dateWidget.findElements(By.tagName("td"));
@@ -61,8 +83,8 @@ public class FLightValidate {
 				break;
 			}
 		}
-		}
- 
+	}
+
 	@BeforeClass
 	public void beforeClass() {
 		driver = new FirefoxDriver();

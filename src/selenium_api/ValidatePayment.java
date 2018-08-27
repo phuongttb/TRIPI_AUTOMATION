@@ -1,5 +1,7 @@
 package selenium_api;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -29,7 +31,7 @@ public class ValidatePayment {
 		new Select(driver.findElement(By.xpath("(//select[@ng-model='adult.gender'])[1]")))
 				.selectByVisibleText(gender_adult);
 
-		// NHAP THONG TIN TRE EM 
+		// NHAP THONG TIN TRE EM
 		driver.findElement(By.xpath("//input[@ng-model='child.lastName']")).sendKeys(firstname_child);
 		driver.findElement(By.xpath("//input[@ng-model='child.firstName']")).sendKeys(lastname_child);
 		new Select(driver.findElement(By.xpath("(//select[@ng-model='child.gender'])[1]")))
@@ -101,10 +103,10 @@ public class ValidatePayment {
 	}
 
 	@Test(priority = 2)
-	@Parameters({ "lastname_adult", "firstname_adult", "gender_adult", "firstname_child", "lastname_child","gender_child", "day_child",
-			"month_child", "year_child", "lastname_infant", "firstname_infant", "gender_infant", "day_infant",
-			"month_infant", "year_infant", "gender_contact", "lastname_contact", "firstname_contact", "email_contact",
-			"phone_contact" })
+	@Parameters({ "lastname_adult", "firstname_adult", "gender_adult", "firstname_child", "lastname_child",
+			"gender_child", "day_child", "month_child", "year_child", "lastname_infant", "firstname_infant",
+			"gender_infant", "day_infant", "month_infant", "year_infant", "gender_contact", "lastname_contact",
+			"firstname_contact", "email_contact", "phone_contact" })
 	public void TC_WithoutSelectPaymentMethod(String lastname_adult, String firstname_adult, String gender_adult,
 			String firstname_child, String lastname_child, String gender_child, String day_child, String month_child,
 			String year_child, String lastname_infant, String firstname_infant, String gender_infant, String day_infant,
@@ -119,18 +121,26 @@ public class ValidatePayment {
 		driver.navigate().refresh();
 		WebElement paymentbtn = driver.findElement(By.cssSelector(".flight-payment-button"));
 		paymentbtn.click();
-		Thread.sleep(8000);
+		Thread.sleep(8000);		
 		String errormssage = driver.findElement(By.cssSelector(".message")).getText();
+//		if(!email_contact.isEmpty()){
+//			 assertEquals(errormssage, "Vui lòng kiểm tra lại thông tin hành khách!");
+//			}
+//			if(!phone_contact.isEmpty()){
+//			  assertEquals(errormssage, "Vui lòng kiểm tra lại thông tin hành khách!");
+//			}
 		System.out.println("WithoutSelectPaymentMethod: " + errormssage);
 		Assert.assertEquals(errormssage, "Vui lòng lựa chọn phương thức thanh toán");
 
 	}
+	
+	
 
 	@BeforeClass
 	public void beforeClass() {
 		driver = new FirefoxDriver();
 		driver.get(
-				"https://www.tripi.vn/flights/booking?requestIdOutBound=-980413262&fromAirport=HAN&toAirport=SGN&departureDate=30-08-2018&ticketClassId=1&numAdults=1&numChildren=1&numInfants=1&oneWay=1&ticketOutBoundId=-1552192560&agencyIdOutBound=3");
+				"https://www.tripi.vn/flights/booking?requestIdOutBound=-1959182868&fromAirport=HAN&toAirport=SGN&departureDate=07-09-2018&ticketClassId=1&numAdults=1&numChildren=1&numInfants=1&oneWay=1&ticketOutBoundId=-351062617&agencyIdOutBound=3");
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 	}

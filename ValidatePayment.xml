@@ -5,25 +5,57 @@
 		<classes>
 			<class name="selenium_api.ValidatePayment">
 				<methods>
+        
 				<include name="TC_ValidatLetBlankCustomer">
 					</include>
-					<include name="TC_WithoutSelectPaymentMethod">
-						<parameter name='LastName_payment' value="Tran"></parameter>
-						<parameter name='FirstName_payment' value="Phuong"></parameter>
-						<parameter name='Gender_payment' value="Nữ"></parameter>	
-						<parameter name='Baggage_payment' value="Nữ"></parameter>	
-						<parameter name='GenderContact_pay' value="Bà"></parameter>		
-						<parameter name='LastNameContact_pay' value="Phan Dinh"></parameter>
-						<parameter name='FirstNameContact_pay' value="Tu"></parameter>	
-						<parameter name='email_contact' value="phuong@gmail.com"></parameter>	
-						<parameter name='phone_contact' value="097759715"></parameter>			
-		
-					</include>
-				
 					<include name="TC_TC_ValidateVoucherCode">
 						<parameter name='vouchercode' value="ddddd"></parameter>		
 					</include>
-					
+			
+					<include name="TC_WithoutSelectPaymentMethod">
+						<parameter name='lastname_adult' value="Tran"></parameter>
+						<parameter name='firstname_adult' value="Phuong"></parameter>
+						<parameter name='gender_adult' value="Nữ"></parameter>			
+						<parameter name='lastname_child' value="Nguyen"></parameter>	
+						<parameter name='firstname_child' value="Nguyen"></parameter>	
+						<parameter name='gender_child' value="Nữ"></parameter>	
+						<parameter name='day_child' value="12"></parameter>	
+						<parameter name='month_child' value="03"></parameter>	
+						<parameter name='year_child' value="2007"></parameter>	
+						<parameter name='lastname_infant' value="Tran"></parameter>	
+						<parameter name='firstname_infant' value="phuong"></parameter>	
+						<parameter name='gender_infant' value="Nữ"></parameter>	
+						<parameter name='day_infant' value="23"></parameter>	
+						<parameter name='month_infant' value="11"></parameter>	
+						<parameter name='year_infant' value="2017"></parameter>	
+						<parameter name='gender_contact' value="Bà"></parameter>		
+						<parameter name='lastname_contact' value="Phan Dinh"></parameter>
+						<parameter name='firstname_contact' value="Tu"></parameter>	
+						<parameter name='email_contact' value="phuong@gmail.com"></parameter>	
+						<parameter name='phone_contact' value="097759715"></parameter>		
+					</include>	
+					<include name="TC_WithoutSelectPaymentMethod">
+						<parameter name='lastname_adult1' value="Tran"></parameter>
+						<parameter name='firstname_adult1' value="Phuong"></parameter>
+						<parameter name='gender_adult1' value="Nữ"></parameter>			
+						<parameter name='lastname_child1' value="Nguyen"></parameter>	
+						<parameter name='firstname_child1' value="Nguyen"></parameter>	
+						<parameter name='gender_child1' value="Nữ"></parameter>	
+						<parameter name='day_child1' value="12"></parameter>	
+						<parameter name='month_child1' value="03"></parameter>	
+						<parameter name='year_child1' value="2007"></parameter>	
+						<parameter name='lastname_infant1' value="Tran"></parameter>	
+						<parameter name='firstname_infant1' value="phuong"></parameter>	
+						<parameter name='gender_infant1' value="Nữ"></parameter>	
+						<parameter name='day_infant1' value="23"></parameter>	
+						<parameter name='month_infant1' value="11"></parameter>	
+						<parameter name='year_infant1' value="2017"></parameter>	
+						<parameter name='gender_contact1' value="Bà"></parameter>		
+						<parameter name='lastname_contact1' value="Phan Dinh"></parameter>
+						<parameter name='firstname_contact1' value="Tu"></parameter>	
+						<parameter name='email_contact1' value="phuong@gmail.com"></parameter>	
+						<parameter name='phone_contact1' value=""></parameter>		
+					</include>									
 				</methods>
 			</class>
 		</classes>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Parameterization Test Suite">
+	<test name="Testing Parameterization">
+		<classes>
+			<class name="selenium_api.FlightCheckInformation">
+				<methods>
+					<include name="TC_Flight_CheckAllInformation">
+						<parameter name='flight_fromairport' value="HAN"></parameter>
+						<parameter name='flight_toairport' value="SGN"></parameter>
+						<parameter name="flight_checkindate" value="30"></parameter>	
+						<parameter name="selectagencyintbound" value="Jetstar Airways"></parameter>		
+						
+					</include>
+
+				</methods>
+			</class>
+		</classes>
+	</test> <!-- Test -->
+</suite> <!-- Suite -->

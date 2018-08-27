@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Parameterization Test Suite">
+	<test name="Testing Parameterization">
+		<classes>
+			<class name="selenium_api.FLightValidate">
+				<methods>
+					<include name="TC_01_Validatesamedestination">
+						<parameter name='flightfromairportv' value="HAN"></parameter>
+						<parameter name='flighttoairportv' value="HAN"></parameter>
+						<parameter name="flightcheckindatev" value="25"></parameter>				
+					</include>
+
+				</methods>
+			</class>
+		</classes>
+	</test> <!-- Test -->
+</suite> <!-- Suite -->
