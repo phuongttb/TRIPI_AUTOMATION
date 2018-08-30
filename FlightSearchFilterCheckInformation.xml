@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Parameterization Test Suite">
+	<test name="Testing Parameterization">
+		<classes>
+			<class name="selenium_api.FlightSearchFilterCheckInformation">
+				<methods>
+	
+					<include name="TC_01_SearchFilterPrintTicket_OneTrip">
+						<parameter name='flightfromairport1' value="HAN"></parameter>
+						<parameter name='flighttoairport1' value="SGN"></parameter>
+						<parameter name="flightcheckindate1" value="5"></parameter>
+						<parameter name="numadult" value="3"></parameter>
+						<parameter name="children" value="2"></parameter>
+						<parameter name="selectagencyoutbound1" value="VietJet Air"></parameter>
+						<parameter name="selectagencyintbound1" value="VietJet Air"></parameter>						
+					</include>
+			
+					<include name="TC_02_SearchFligh_notsatisfysearchcondition">
+						<parameter name='flightfromairport2' value="HAN"></parameter>
+						<parameter name='flighttoairport2' value="SGN"></parameter>
+						<parameter name="flightcheckindate2" value="1"></parameter>
+						<parameter name="flightcheckoutdate2" value="15"></parameter>
+						<parameter name="selectagencyoutbound2" value="VietJet Air"></parameter>
+						<parameter name="selectagencyintbound2" value="VietJet Air"></parameter>						
+					</include>
+		
+				</methods>
+			</class>
+		</classes>
+	</test> <!-- Test -->
+</suite> <!-- Suite -->
