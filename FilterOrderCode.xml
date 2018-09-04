@@ -7,7 +7,7 @@
 				<methods>
 					<include name="TC_01_Filterorder">
 						<parameter name='username' value="0988100942"></parameter>
-						<parameter name='password' value="123456"></parameter>
+						<parameter name='password' value="123456@"></parameter>
 						<parameter name='orderid' value="122397"></parameter>					
 					</include>
 					
