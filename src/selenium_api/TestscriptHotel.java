@@ -85,31 +85,27 @@ public class TestscriptHotel {
 				String price = itemprice.getText();
 				System.out.println(price);
 			}
-			int numhotel=listhotel.size();
+			int numhotel = listhotel.size();
 			Assert.assertEquals(numhotel > 0, true);
 		}
-	
-	
-		
+
 		System.out.println("--------------------------------------------------");
 
 		Thread.sleep(2000);
 
+	}
+
+	// PRINT ROOM'S INFORMATION AND CLICK VÀO NÚT ĐẶT PHÒNG
+	@Test()
+	public void TC_02_BookHotel() throws InterruptedException {
 		// Nhấn vào nút Đặt Phòng
 
-//		 driver.findElement(By.xpath("//span[contains(text(),'Đặt phòng')]")).click();
+		driver.findElement(By.xpath("//span[contains(text(),'Đặt phòng')]")).click();
 
 		WebElement bookbtn = driver.findElement(By.cssSelector(".hotel-view-content-tripi"));
 		bookbtn.click();
 		ArrayList<String> tabs1 = new ArrayList<String>(driver.getWindowHandles());
 		driver.switchTo().window(tabs1.get(1));
-
-		
-	}
-	/** Test
-	// PRINT ROOM'S INFORMATION AND CLICK VÀO NÚT ĐẶT PHÒNG
-	@Test(enabled = false)
-	public void TC_03_BookHotel() throws InterruptedException {
 
 		WebElement listroomdiv = driver.findElement(By.cssSelector(".provider-list"));
 		List<WebElement> listroom = listroomdiv
@@ -121,16 +117,18 @@ public class TestscriptHotel {
 			WebElement roomprice = item.findElement(By.cssSelector(".fader ng-binding"));
 			String price = roomprice.getText();
 			System.out.println(price);
+			int numroom = listroom.size();
+			Assert.assertEquals(numroom > 0, true);
 		}
 		Thread.sleep(10000);
 
 		// click on book button on search results
-		driver.findElement(By.xpath("//span[@class='hotel-add-payment-info ng-binding']")).click();
-		ArrayList<String> tabs1 = new ArrayList<String>(driver.getWindowHandles());
-		driver.switchTo().window(tabs1.get(1));
-		Thread.sleep(10000);
+//		driver.findElement(By.xpath("//span[@class='hotel-add-payment-info ng-binding']")).click();
+//		ArrayList<String> tabs1 = new ArrayList<String>(driver.getWindowHandles());
+//		driver.switchTo().window(tabs1.get(1));
+//		Thread.sleep(10000);
 	}
-*/
+
 	@BeforeClass
 	public void beforeClass() {
 		driver = new FirefoxDriver();
