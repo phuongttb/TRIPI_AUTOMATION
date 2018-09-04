@@ -3,7 +3,7 @@
 <suite name="Parameterization Test Suite">
 	<test name="Testing Parameterization">
 		<classes>
-			<class name="selenium_api.Login">
+			<class name="selenium_api.FilterOrder">
 				<methods>
 					<include name="TC_01_Filterorder">
 						<parameter name='username' value="0988100942"></parameter>
