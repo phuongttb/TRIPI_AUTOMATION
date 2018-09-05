@@ -17,7 +17,7 @@
 					<parameter name='user_name' value="Tran Phuong"></parameter>	
 					<parameter name='phone_number' value="0942127129"></parameter>
 					<parameter name='email' value="bichphuong1209@gmail.com"></parameter>
-					<parameter name='address' value="Tu Son - Bac Ninh"></parameter>
+					<parameter name='address' value="Trang Ha-Tu Son - Bac Ninh"></parameter>
 					</include>
 				</methods>
 			</class>
