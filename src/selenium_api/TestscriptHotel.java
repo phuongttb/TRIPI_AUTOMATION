@@ -140,7 +140,6 @@ public class TestscriptHotel {
 		WebElement paymentbtn = driver.findElement(By.cssSelector(".flight-payment-button"));
 		paymentbtn.click();
 		Thread.sleep(2000);
-
 		WebElement confirmbtn = driver.findElement(By.cssSelector(".btn-success"));
 		confirmbtn.click();
 		for(int i=0; i< 10; i++) {
