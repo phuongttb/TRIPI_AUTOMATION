@@ -1,5 +1,7 @@
 package selenium_api;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -19,10 +21,9 @@ public class TestscriptHotel {
 	WebDriver driver;
 
 	@Test
-	@Parameters({ "autocompletesearch", "checkindate", "checkoutdate" })
+	@Parameters({ "autocompletesearch", "checkindate", "checkoutdate" ,"room_name"})
 
-	public void TC_02_SearchHotel2(String autocompletesearch, String checkindate, String checkoutdate)
-			throws Exception {
+	public void TC_01_SearchHotel(String autocompletesearch, int checkindate, int checkoutdate ,String room_name) throws Exception {
 
 		// click on Hotel tab
 		driver.findElement(By.xpath("//div[contains(text(),'Khách sạn')]")).click();
@@ -35,7 +36,6 @@ public class TestscriptHotel {
 
 		// click on check-in date
 		driver.findElement(By.xpath("//input[@id='hotel-check-in-value']")).click();
-
 		// chon ngay checkin
 		WebElement dateWidget2 = driver.findElement(By.cssSelector("div.date-picker-wrapper:nth-child(3)"));
 		List<WebElement> columns = dateWidget2.findElements(By.tagName("td"));
@@ -57,6 +57,7 @@ public class TestscriptHotel {
 				}
 
 			}
+		
 			// Chon so nguoi lon
 			WebElement clickonperson = driver.findElement(By.cssSelector(".ui-selectmenu-text"));
 			clickonperson.click();
@@ -70,7 +71,7 @@ public class TestscriptHotel {
 			if (!star.isSelected()) {
 				star.click();
 			}
-			Thread.sleep(4000);
+			Thread.sleep(1000);
 
 			System.out.println("--------------------------------------------------");
 
@@ -86,20 +87,21 @@ public class TestscriptHotel {
 				System.out.println(price);
 			}
 			int numhotel = listhotel.size();
-			Assert.assertEquals(numhotel > 0, true);
+			assertTrue(numhotel > 0);
+
 		}
 
 		System.out.println("--------------------------------------------------");
-
-		Thread.sleep(2000);
+		
 
 	}
+
 
 	// PRINT ROOM'S INFORMATION AND CLICK VÀO NÚT ĐẶT PHÒNG
 	@Test()
 	public void TC_02_BookHotel() throws InterruptedException {
+		
 		// Nhấn vào nút Đặt Phòng
-
 		driver.findElement(By.xpath("//span[contains(text(),'Đặt phòng')]")).click();
 
 		WebElement bookbtn = driver.findElement(By.cssSelector(".hotel-view-content-tripi"));
@@ -109,31 +111,61 @@ public class TestscriptHotel {
 
 		WebElement listroomdiv = driver.findElement(By.cssSelector(".provider-list"));
 		List<WebElement> listroom = listroomdiv
-				.findElements(By.cssSelector(".content agency-item-provider displayed ng-scope"));
+				.findElements(By.cssSelector(".list-rooms-by-agency"));
 		System.out.println("Total room item :" + listroom.size());
 		for (WebElement item : listroom) {
-			WebElement itemname = item.findElement(By.cssSelector(".room-title"));
-			System.out.println(itemname);
-			WebElement roomprice = item.findElement(By.cssSelector(".fader ng-binding"));
-			String price = roomprice.getText();
-			System.out.println(price);
-			int numroom = listroom.size();
-			Assert.assertEquals(numroom > 0, true);
 		}
-		Thread.sleep(10000);
+		
+		
+		int numroom = listroom.size();
+		assertTrue(numroom > 0);
+		
+		WebElement selectBtn = listroomdiv.findElement(By.xpath("//div[contains(.,'SUITE DELIGHT PLUS 2 BEDROOMS')]/following::span[contains(.,'Đặt ngay')][1]"));
+		selectBtn.click();
+		Thread.sleep(3000);
 
-		// click on book button on search results
-//		driver.findElement(By.xpath("//span[@class='hotel-add-payment-info ng-binding']")).click();
-//		ArrayList<String> tabs1 = new ArrayList<String>(driver.getWindowHandles());
-//		driver.switchTo().window(tabs1.get(1));
-//		Thread.sleep(10000);
 	}
+	
+	//Payment 
+	@Test()
+	@Parameters({"user_name" ,"phone_number" ,"email" ,"address"})
+	public void TC_03_Payment(String user_name, String phone_number ,String email, String address) throws InterruptedException {
+		
+        System.out.print("Go to payment screen");
+		driver.findElement(By.xpath("//input[@name='name']")).sendKeys(user_name);
+		driver.findElement(By.xpath("//input[@name='phoneNumber']")).sendKeys(phone_number);
+		driver.findElement(By.xpath("//input[@name='email']")).sendKeys(email);
+		driver.findElement(By.xpath("//input[@name='address']")).sendKeys(address);
+		WebElement paymentmethod = driver.findElement(By.cssSelector("#payment-method-3"));
+		paymentmethod.click();
+		Thread.sleep(1000);
+		WebElement paymentbtn = driver.findElement(By.cssSelector(".flight-payment-button"));
+		paymentbtn.click();
+		Thread.sleep(2000);
+
+		WebElement confirmbtn = driver.findElement(By.cssSelector(".btn-success"));
+		confirmbtn.click();
+		for(int i=0; i< 10; i++) {
+			String currentURL = driver.getCurrentUrl();
+			if(currentURL.contains("booking")) {
+				Thread.sleep(5000);
+			}else {
+				break;
+			}
+		}
+		String currentURL = driver.getCurrentUrl();
+		boolean redirectURL = currentURL.contains("https://pay.vnpay.vn/Transaction/PaymentMethod.html?token=");
+		System.out.print("Đi tới cổng thanh toán thành công");
+		Assert.assertEquals(redirectURL, true);
+		
+		}
+	
 
 	@BeforeClass
 	public void beforeClass() {
 		driver = new FirefoxDriver();
 		driver.get("https://www.tripi.vn/");
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 
 	}
