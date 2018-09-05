@@ -113,10 +113,7 @@ public class TestscriptHotel {
 		List<WebElement> listroom = listroomdiv
 				.findElements(By.cssSelector(".list-rooms-by-agency"));
 		System.out.println("Total room item :" + listroom.size());
-		for (WebElement item : listroom) {
-		}
-		
-		
+	
 		int numroom = listroom.size();
 		assertTrue(numroom > 0);
 		
@@ -130,6 +127,7 @@ public class TestscriptHotel {
 	@Test()
 	@Parameters({"user_name" ,"phone_number" ,"email" ,"address"})
 	public void TC_03_Payment(String user_name, String phone_number ,String email, String address) throws InterruptedException {
+		
 		
         System.out.print("Go to payment screen");
 		driver.findElement(By.xpath("//input[@name='name']")).sendKeys(user_name);
