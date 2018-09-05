@@ -106,6 +106,8 @@ public class TestscriptHotel {
 
 		WebElement bookbtn = driver.findElement(By.cssSelector(".hotel-view-content-tripi"));
 		bookbtn.click();
+		
+		
 		ArrayList<String> tabs1 = new ArrayList<String>(driver.getWindowHandles());
 		driver.switchTo().window(tabs1.get(1));
 
@@ -113,14 +115,11 @@ public class TestscriptHotel {
 		List<WebElement> listroom = listroomdiv
 				.findElements(By.cssSelector(".list-rooms-by-agency"));
 		System.out.println("Total room item :" + listroom.size());
-	
 		int numroom = listroom.size();
 		assertTrue(numroom > 0);
-		
 		WebElement selectBtn = listroomdiv.findElement(By.xpath("//div[contains(.,'SUITE DELIGHT PLUS 2 BEDROOMS')]/following::span[contains(.,'Đặt ngay')][1]"));
 		selectBtn.click();
 		Thread.sleep(3000);
-
 	}
 	
 	//Payment 
