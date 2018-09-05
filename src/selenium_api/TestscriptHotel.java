@@ -127,7 +127,6 @@ public class TestscriptHotel {
 	@Parameters({"user_name" ,"phone_number" ,"email" ,"address"})
 	public void TC_03_Payment(String user_name, String phone_number ,String email, String address) throws InterruptedException {
 		
-		
         System.out.print("Go to payment screen");
 		driver.findElement(By.xpath("//input[@name='name']")).sendKeys(user_name);
 		driver.findElement(By.xpath("//input[@name='phoneNumber']")).sendKeys(phone_number);
