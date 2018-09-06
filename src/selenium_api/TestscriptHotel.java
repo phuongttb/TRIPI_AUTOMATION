@@ -1,17 +1,18 @@
 package selenium_api;
 
-import static org.junit.Assert.assertTrue;
+import static org.testng.AssertJUnit.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.testng.Assert;
+import org.testng.AssertJUnit;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
@@ -21,9 +22,11 @@ public class TestscriptHotel {
 	WebDriver driver;
 
 	@Test
-	@Parameters({ "autocompletesearch", "checkindate", "checkoutdate" ,"room_name"})
+	@Parameters({ "autocompletesearch", "checkindate", "checkoutdate", "number_room", "number_adult",
+			"number_infant" })
 
-	public void TC_01_SearchHotel(String autocompletesearch, int checkindate, int checkoutdate ,String room_name) throws Exception {
+	public void TC_01_SearchHotel(String autocompletesearch, String checkindate, String checkoutdate,
+			int number_room, int number_adult, int number_infant) throws Exception {
 
 		// click on Hotel tab
 		driver.findElement(By.xpath("//div[contains(text(),'Khách sạn')]")).click();
@@ -36,98 +39,110 @@ public class TestscriptHotel {
 
 		// click on check-in date
 		driver.findElement(By.xpath("//input[@id='hotel-check-in-value']")).click();
-		// chon ngay checkin
-		WebElement dateWidget2 = driver.findElement(By.cssSelector("div.date-picker-wrapper:nth-child(3)"));
-		List<WebElement> columns = dateWidget2.findElements(By.tagName("td"));
-		for (WebElement cell : columns) {
-			if (cell.getText().equals(checkindate)) {
-				cell.click();
-				break;
-			}
-			Thread.sleep(1000);
-			// select check-out date
-			driver.findElement(By.xpath("//input[@id='hotel-check-out-value']")).click();
 
-			WebElement dateWidget = driver.findElement(By.cssSelector("div.date-picker-wrapper:nth-child(3)"));
-			List<WebElement> columns2 = dateWidget.findElements(By.tagName("td"));
-			for (WebElement cell2 : columns2) {
-				if (cell2.getText().equals(checkoutdate)) {
-					cell2.click();
-					break;
-				}
+		// chọn ngày check in
+		WebElement fromDate = driver.findElement(By.xpath("(//div[normalize-space()='" + checkindate + "'])[1]"));
+		((JavascriptExecutor) driver).executeScript("arguments[0].click();", fromDate);
+		Thread.sleep(1000);
+		// Chon ngay check-out date
+		WebElement toDate = driver.findElement(By.xpath("(//div[normalize-space()='" + checkoutdate + "'])[2]"));
+		((JavascriptExecutor) driver).executeScript("arguments[0].click();", toDate);
+		Thread.sleep(1000);
+		// click vào truong so khach
+		WebElement clickonperson = driver.findElement(By.cssSelector(".ui-selectmenu-text"));
+		clickonperson.click();
 
-			}
-		
-			// Chon so nguoi lon
-			WebElement clickonperson = driver.findElement(By.cssSelector(".ui-selectmenu-text"));
-			clickonperson.click();
-			driver.findElement(By.xpath("//button[@class='btn btn-white btn-ts-up']")).click();
-
-			driver.findElement(By.xpath("//button[@class='hotel-search-button btn btn-search']")).click();
-			Thread.sleep(3000);
-
-			// lọc theo sao của khách sạn
-			WebElement star = driver.findElement(By.cssSelector("#stars-4"));
-			if (!star.isSelected()) {
-				star.click();
-			}
-			Thread.sleep(1000);
-
-			System.out.println("--------------------------------------------------");
-
-			WebElement listhoteldiv = driver.findElement(By.cssSelector(".result-items"));
-			List<WebElement> listhotel = listhoteldiv.findElements(By.cssSelector(".item-wrapper"));
-			System.out.println("Total hotel item :" + listhotel.size());
-			for (WebElement item : listhotel) {
-				WebElement itemname = item.findElement(By.cssSelector(".item-name"));
-				String titleHotel = itemname.getAttribute("title");
-				System.out.println(titleHotel);
-				WebElement itemprice = item.findElement(By.cssSelector(".item-price"));
-				String price = itemprice.getText();
-				System.out.println(price);
-			}
-			int numhotel = listhotel.size();
-			assertTrue(numhotel > 0);
-
+		// Chon so phong
+		for (int i = 0; i < number_room; i++) {
+			driver.findElement(By.xpath("(//button[@class='btn btn-white btn-ts-up'])[1]")).click();
 		}
+		Thread.sleep(1000);
+
+		// Chon so adult
+		for (int i = 0; i < number_adult; i++) {
+			driver.findElement(By.xpath("(//button[@class='btn btn-white btn-ts-up'])[2]")).click();
+		}
+		Thread.sleep(1000);
+
+		// Chon so infant
+		for (int i = 0; i < number_infant; i++) {
+			driver.findElement(By.xpath("(//button[@class='btn btn-white btn-ts-up'])[2]")).click();
+		}
+		Thread.sleep(1000);
+
+		driver.findElement(By.xpath("//button[@class='btn btn-white btn-ts-up']")).click();
+
+		// click vào nút tìm kiếm
+		driver.findElement(By.xpath("//button[@class='hotel-search-button btn btn-search']")).click();
+		Thread.sleep(3000);
+
+		// lọc theo sao của khách sạn
+		WebElement star = driver.findElement(By.cssSelector("#stars-4"));
+		if (!star.isSelected()) {
+			star.click();
+		}
+		Thread.sleep(3000);
 
 		System.out.println("--------------------------------------------------");
-		
+
+		WebElement listhoteldiv = driver.findElement(By.cssSelector(".result-items"));
+		List<WebElement> listhotel = listhoteldiv.findElements(By.cssSelector(".item-wrapper"));
+		System.out.println("Total hotel item :" + listhotel.size());
+		for (WebElement item : listhotel) {
+			WebElement itemname = item.findElement(By.cssSelector(".item-name"));
+			String titleHotel = itemname.getAttribute("title");
+			System.out.println(titleHotel);
+			WebElement itemprice = item.findElement(By.cssSelector(".item-price"));
+			String price = itemprice.getText();
+			System.out.println(price);
+		}
+		int numhotel = listhotel.size();
+		assertTrue(numhotel > 0);
+
+		System.out.println("--------------------------------------------------");
 
 	}
-
 
 	// PRINT ROOM'S INFORMATION AND CLICK VÀO NÚT ĐẶT PHÒNG
 	@Test()
-	public void TC_02_BookHotel() throws InterruptedException {
-		
+	@Parameters({  "room_name" })
+	public void TC_02_ChooseRoom(String room_name) throws InterruptedException {
+
 		// Nhấn vào nút Đặt Phòng
 		driver.findElement(By.xpath("//span[contains(text(),'Đặt phòng')]")).click();
 
-		WebElement bookbtn = driver.findElement(By.cssSelector(".hotel-view-content-tripi"));
-		bookbtn.click();
-		
-		
+//		WebElement bookbtn = driver.findElement(By.cssSelector(".hotel-view-content-tripi"));
+//		bookbtn.click();
 		ArrayList<String> tabs1 = new ArrayList<String>(driver.getWindowHandles());
 		driver.switchTo().window(tabs1.get(1));
-
+		Thread.sleep(2000);
+   
 		WebElement listroomdiv = driver.findElement(By.cssSelector(".provider-list"));
 		List<WebElement> listroom = listroomdiv
 				.findElements(By.cssSelector(".list-rooms-by-agency"));
+		
+//			WebElement selectBtn = listroomdiv
+//					.findElement(By.xpath("//div[contains(.,'"+room_name+"')]/following-sibling::span[contains(.,'Đặt ngay')][1]"));
+//			selectBtn.click();
+		WebElement selectBtn = listroomdiv
+				.findElement(By.xpath("//div[text()='Superior Deluxe 2 Bedroom Suite Beach View']/../../following-sibling::*//span[text()='Đặt ngay'][1]"));
+		selectBtn.click();
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", selectBtn);
+		Thread.sleep(500); 
+	
 		System.out.println("Total room item :" + listroom.size());
 		int numroom = listroom.size();
 		assertTrue(numroom > 0);
-		WebElement selectBtn = listroomdiv.findElement(By.xpath("//div[contains(.,'SUITE DELIGHT PLUS 2 BEDROOMS')]/following::span[contains(.,'Đặt ngay')][1]"));
-		selectBtn.click();
-		Thread.sleep(3000);
-	}
-	
-	//Payment 
-	@Test()
-	@Parameters({"user_name" ,"phone_number" ,"email" ,"address"})
-	public void TC_03_Payment(String user_name, String phone_number ,String email, String address) throws InterruptedException {
 		
-        System.out.print("Go to payment screen");
+	}
+
+	// Payment
+	@Test()
+	@Parameters({ "user_name", "phone_number", "email", "address" })
+	public void TC_03_Payment(String user_name, String phone_number, String email, String address)
+			throws InterruptedException {
+
+		System.out.print("Go to payment screen");
 		driver.findElement(By.xpath("//input[@name='name']")).sendKeys(user_name);
 		driver.findElement(By.xpath("//input[@name='phoneNumber']")).sendKeys(phone_number);
 		driver.findElement(By.xpath("//input[@name='email']")).sendKeys(email);
@@ -140,21 +155,20 @@ public class TestscriptHotel {
 		Thread.sleep(2000);
 		WebElement confirmbtn = driver.findElement(By.cssSelector(".btn-success"));
 		confirmbtn.click();
-		for(int i=0; i< 10; i++) {
+		for (int i = 0; i < 10; i++) {
 			String currentURL = driver.getCurrentUrl();
-			if(currentURL.contains("booking")) {
+			if (currentURL.contains("booking")) {
 				Thread.sleep(5000);
-			}else {
+			} else {
 				break;
 			}
 		}
 		String currentURL = driver.getCurrentUrl();
 		boolean redirectURL = currentURL.contains("https://pay.vnpay.vn/Transaction/PaymentMethod.html?token=");
 		System.out.print("Đi tới cổng thanh toán thành công");
-		Assert.assertEquals(redirectURL, true);
-		
-		}
-	
+		AssertJUnit.assertEquals(redirectURL, true);
+
+	}
 
 	@BeforeClass
 	public void beforeClass() {
