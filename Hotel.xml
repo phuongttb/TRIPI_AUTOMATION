@@ -3,22 +3,29 @@
 <suite name="Parameterization Test Suite">
 	<test name="Testing Parameterization">
 		<classes>
-			<class name="selenium_api.TestscriptHotel">
+			<class name="vn.tripi.testing.searching.TestscriptHotel">
 				<methods>
+			
 					<include name="TC_01_SearchHotel">
 						<parameter name='autocompletesearch' value="Đà Nẵng"></parameter>
-						<parameter name='checkindate' value="7"></parameter>
-						<parameter name="checkoutdate" value="9"></parameter>	
-						<parameter name="room_name" value="SUITE DELIGHT PLUS 2 BEDROOMS"></parameter>			
+						<parameter name='checkindate' value="10"></parameter>
+						<parameter name="checkoutdate" value="20"></parameter>	
+						<parameter name="number_room" value="0"></parameter>
+						<parameter name="number_adult" value="0"></parameter>	
+						<parameter name="number_infant" value="0"></parameter>							
 					</include>
-					<include name="TC_02_BookHotel">		
+					
+					<include name="TC_02_ChooseRoom">	
+					<parameter name="room_name" value="SUITE DELIGHT PLUS 2 BEDROOMS"></parameter>		
 					</include>
+					
 					<include name="TC_03_Payment">	
 					<parameter name='user_name' value="Tran Phuong"></parameter>	
 					<parameter name='phone_number' value="0942127129"></parameter>
 					<parameter name='email' value="bichphuong1209@gmail.com"></parameter>
-					<parameter name='address' value="Trang Ha-Tu Son - Bac Ninh"></parameter>
+					<parameter name='address' value="Trang Ha Tu Son Bac Ninh"></parameter>
 					</include>
+				
 				</methods>
 			</class>
 		</classes>
