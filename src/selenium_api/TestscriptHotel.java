@@ -22,11 +22,10 @@ public class TestscriptHotel {
 	WebDriver driver;
 
 	@Test
-	@Parameters({ "autocompletesearch", "checkindate", "checkoutdate", "number_room", "number_adult",
-			"number_infant" })
+	@Parameters({ "autocompletesearch", "checkindate", "checkoutdate", "number_room", "number_adult", "number_infant" })
 
-	public void TC_01_SearchHotel(String autocompletesearch, String checkindate, String checkoutdate,
-			int number_room, int number_adult, int number_infant) throws Exception {
+	public void TC_01_SearchHotel(String autocompletesearch, String checkindate, String checkoutdate, int number_room,
+			int number_adult, int number_infant) throws Exception {
 
 		// click on Hotel tab
 		driver.findElement(By.xpath("//div[contains(text(),'Khách sạn')]")).click();
@@ -66,7 +65,7 @@ public class TestscriptHotel {
 
 		// Chon so infant
 		for (int i = 0; i < number_infant; i++) {
-			driver.findElement(By.xpath("(//button[@class='btn btn-white btn-ts-up'])[2]")).click();
+			driver.findElement(By.xpath("(//button[@class='btn btn-white btn-ts-up'])[3]")).click();
 		}
 		Thread.sleep(1000);
 
@@ -105,52 +104,43 @@ public class TestscriptHotel {
 
 	// PRINT ROOM'S INFORMATION AND CLICK VÀO NÚT ĐẶT PHÒNG
 	@Test()
-	@Parameters({  "room_name" })
+	@Parameters({ "room_name" })
 	public void TC_02_ChooseRoom(String room_name) throws InterruptedException {
 
 		// Nhấn vào nút Đặt Phòng
 		driver.findElement(By.xpath("//span[contains(text(),'Đặt phòng')]")).click();
-
-//		WebElement bookbtn = driver.findElement(By.cssSelector(".hotel-view-content-tripi"));
-//		bookbtn.click();
 		ArrayList<String> tabs1 = new ArrayList<String>(driver.getWindowHandles());
 		driver.switchTo().window(tabs1.get(1));
-		Thread.sleep(2000);
-   
-		WebElement listroomdiv = driver.findElement(By.cssSelector(".provider-list"));
-		List<WebElement> listroom = listroomdiv
-				.findElements(By.cssSelector(".list-rooms-by-agency"));
-		
-//			WebElement selectBtn = listroomdiv
-//					.findElement(By.xpath("//div[contains(.,'"+room_name+"')]/following-sibling::span[contains(.,'Đặt ngay')][1]"));
-//			selectBtn.click();
-		WebElement selectBtn = listroomdiv
-				.findElement(By.xpath("//div[text()='Superior Deluxe 2 Bedroom Suite Beach View']/../../following-sibling::*//span[text()='Đặt ngay'][1]"));
-		selectBtn.click();
-		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", selectBtn);
-		Thread.sleep(500); 
-	
+        Thread.sleep(5000);  
+
+		List<WebElement> listroom = driver.findElements(By.cssSelector(".list-rooms-by-agency"));
 		System.out.println("Total room item :" + listroom.size());
 		int numroom = listroom.size();
 		assertTrue(numroom > 0);
-		
+
+		Thread.sleep(4000);
+		WebElement selectBtn = driver.findElement(
+				By.xpath("//div[text()='" + room_name + "']/../../following-sibling::*//span[text()='Đặt ngay']"));
+		selectBtn.click();
+
 	}
 
-	// Payment
 	@Test()
 	@Parameters({ "user_name", "phone_number", "email", "address" })
 	public void TC_03_Payment(String user_name, String phone_number, String email, String address)
 			throws InterruptedException {
-
-		System.out.print("Go to payment screen");
+		ArrayList<String> tabs1 = new ArrayList<String>(driver.getWindowHandles());
+		driver.switchTo().window(tabs1.get(1));
+		Thread.sleep(5000);
 		driver.findElement(By.xpath("//input[@name='name']")).sendKeys(user_name);
+		Thread.sleep(1000);
 		driver.findElement(By.xpath("//input[@name='phoneNumber']")).sendKeys(phone_number);
 		driver.findElement(By.xpath("//input[@name='email']")).sendKeys(email);
-		driver.findElement(By.xpath("//input[@name='address']")).sendKeys(address);
+		driver.findElement(By.xpath("//textarea[@name='address']")).sendKeys(address);
 		WebElement paymentmethod = driver.findElement(By.cssSelector("#payment-method-3"));
 		paymentmethod.click();
 		Thread.sleep(1000);
-		WebElement paymentbtn = driver.findElement(By.cssSelector(".flight-payment-button"));
+		WebElement paymentbtn = driver.findElement(By.cssSelector(".hotel-payment-button"));
 		paymentbtn.click();
 		Thread.sleep(2000);
 		WebElement confirmbtn = driver.findElement(By.cssSelector(".btn-success"));
