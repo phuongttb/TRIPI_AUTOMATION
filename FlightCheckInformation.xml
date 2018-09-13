@@ -10,11 +10,11 @@
 						<parameter name='flight_toairport' value="SGN"></parameter>
 						<parameter name="flight_checkindate" value="30"></parameter>	
 						<parameter name="selectagencyintbound" value="Jetstar Airways"></parameter>		
-						
 					</include>
 
 				</methods>
 			</class>
 		</classes>
 	</test> <!-- Test -->
-</suite> <!-- Suite -->
+</suite> 
+
