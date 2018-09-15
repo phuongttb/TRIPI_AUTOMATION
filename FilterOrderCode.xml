@@ -3,14 +3,29 @@
 <suite name="Parameterization Test Suite">
 	<test name="Testing Parameterization">
 		<classes>
-			<class name="selenium_api.FilterOrder">
+			<class name="vn.tripi.testing.searching.FilterOrder">
 				<methods>
 					<include name="TC_01_Filterorder">
 						<parameter name='username' value="0988100942"></parameter>
 						<parameter name='password' value="123456@"></parameter>
 						<parameter name='orderid' value="122397"></parameter>					
 					</include>
-					
+					<!--
+					<include name="TC_02_FilterBookingCode">
+						<parameter name='booking_code' value="MJJORZ"></parameter>					
+					</include>
+							
+					<include name="TC_03_FilterStatusSuccess">				
+					</include>										
+					<include name="TC_04_FilterStatusHolding">				
+					</include>
+					<include name="TC_05_FilterStatusAll">				
+					</include>
+					-->	
+						<include name="TC_06_FilterDate">	
+						<parameter name='check_in' value="11"></parameter>		
+						<parameter name='check_out' value="20"></parameter>		
+					</include>
 				</methods>
 			</class>
 		</classes>
