@@ -1,22 +1,22 @@
 package selenium_api;
 
+import static org.testng.AssertJUnit.assertTrue;
+
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-public class FilterOrder {
-	WebDriver driver;
-	@Test ()
-	@Parameters({ "username", "password" ,"orderid"})
+import vn.tripi.testing.commons.BaseClass;
+
+public class FilterOrder extends BaseClass {
+
+	@Test()
+	@Parameters({ "username", "password", "orderid" })
 	public void TC_01_Filterorder(String username, String password, String orderid) throws InterruptedException {
-		driver.get("https://www.tripi.vn/");
 
 		driver.findElement(By.cssSelector(".header-menu")).click();
 		Thread.sleep(1000);
@@ -33,27 +33,142 @@ public class FilterOrder {
 		Thread.sleep(2000);
 		driver.findElement(By.id("btn-filter")).click();
 		Thread.sleep(2000);
+
 		driver.findElement(By.id("bookingIdInput")).sendKeys(orderid);
 		Thread.sleep(5000);
 		driver.findElement(By.cssSelector(".btn-confirm")).click();
 		Thread.sleep(4000);
-		WebElement bookinglisttable = driver.findElement(By.xpath("//div[@data-ng-controller='bookingManageController']"));
+		WebElement bookinglisttable = driver
+				.findElement(By.xpath("//div[@data-ng-controller='bookingManageController']"));
 		List<WebElement> bookinglist = bookinglisttable.findElements(By.cssSelector(".list-booking"));
-		System.out.println("Tổng số booking:" + bookinglist.size());	
-	}	
- 
-	@BeforeClass
-	public void beforeClass() {
-		driver = new FirefoxDriver();
-		driver.get("https://www.tripi.vn/");
-//		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-		driver.manage().window().maximize();
+		int numOfBooking = bookinglist.size();
+
+		assertTrue(numOfBooking > 0);
+		System.out.println("Tổng số booking:" + bookinglist.size());
 	}
 
-	@AfterClass
-	public void afterClass() {
-		driver.quit();
+	@Test()
+	@Parameters({ "booking_code" })
+	public void TC_02_FilterBookingCode(String booking_code) throws InterruptedException {
 
+		driver.navigate().refresh();
+		driver.findElement(By.cssSelector("a[ui-sref='booker.bookingManage']")).click();
+		Thread.sleep(2000);
+		driver.findElement(By.id("btn-filter")).click();
+		Thread.sleep(2000);
+
+		driver.findElement(By.xpath("//input[@ng-model='filters.bookingCode']")).sendKeys(booking_code);
+		Thread.sleep(5000);
+		driver.findElement(By.cssSelector(".btn-confirm")).click();
+		Thread.sleep(4000);
+		WebElement bookinglisttable = driver
+				.findElement(By.xpath("//div[@data-ng-controller='bookingManageController']"));
+		List<WebElement> bookinglist = bookinglisttable.findElements(By.cssSelector(".list-booking"));
+		int numOfBooking = bookinglist.size();
+
+		assertTrue(numOfBooking > 0);
+		System.out.println("Tổng số booking:" + bookinglist.size());
 	}
 
+	@Test()
+
+	public void TC_03_FilterStatusSuccess() throws InterruptedException {
+
+		driver.navigate().refresh();
+		driver.findElement(By.cssSelector("a[ui-sref='booker.bookingManage']")).click();
+		Thread.sleep(2000);
+		driver.findElement(By.id("btn-filter")).click();
+		Thread.sleep(2000);
+
+		driver.findElement(By.xpath("//span[normalize-space()='Thành công']")).click();
+		Thread.sleep(5000);
+		driver.findElement(By.cssSelector(".btn-confirm")).click();
+		Thread.sleep(4000);
+		WebElement bookinglisttable = driver
+				.findElement(By.xpath("//div[@data-ng-controller='bookingManageController']"));
+		List<WebElement> bookinglist = bookinglisttable.findElements(By.cssSelector(".list-booking"));
+		int numOfBooking = bookinglist.size();
+
+		assertTrue(numOfBooking > 0);
+		System.out.println("Tổng số booking:" + bookinglist.size());
+		Thread.sleep(2000);
+	}
+
+	@Test()
+	public void TC_04_FilterStatusHolding() throws InterruptedException {
+
+		driver.navigate().refresh();
+		driver.findElement(By.cssSelector("a[ui-sref='booker.bookingManage']")).click();
+		Thread.sleep(2000);
+		driver.findElement(By.id("btn-filter")).click();
+		Thread.sleep(2000);
+
+		driver.findElement(By.xpath("//span[normalize-space()='Đang giữ']")).click();
+		Thread.sleep(5000);
+		driver.findElement(By.cssSelector(".btn-confirm")).click();
+		Thread.sleep(4000);
+		WebElement bookinglisttable = driver
+				.findElement(By.xpath("//div[@data-ng-controller='bookingManageController']"));
+		List<WebElement> bookinglist = bookinglisttable.findElements(By.cssSelector(".list-booking"));
+		int numOfBooking = bookinglist.size();
+
+		assertTrue(numOfBooking > 0);
+		System.out.println("Tổng số booking:" + bookinglist.size());
+		Thread.sleep(2000);
+	}
+
+	@Test()
+	public void TC_05_FilterStatusAll() throws InterruptedException {
+
+		driver.navigate().refresh();
+		driver.findElement(By.cssSelector("a[ui-sref='booker.bookingManage']")).click();
+		Thread.sleep(2000);
+		driver.findElement(By.id("btn-filter")).click();
+		Thread.sleep(2000);
+
+		driver.findElement(By.xpath("//span[normalize-space()='Tất cả']")).click();
+		Thread.sleep(5000);
+		driver.findElement(By.cssSelector(".btn-confirm")).click();
+		Thread.sleep(4000);
+		WebElement bookinglisttable = driver
+				.findElement(By.xpath("//div[@data-ng-controller='bookingManageController']"));
+		List<WebElement> bookinglist = bookinglisttable.findElements(By.cssSelector(".list-booking"));
+		int numOfBooking = bookinglist.size();
+
+		assertTrue(numOfBooking > 0);
+		System.out.println("Tổng số booking:" + bookinglist.size());
+		Thread.sleep(2000);
+	}
+	@Parameters({ "check_in" ,"check_out" })
+	@Test()
+	public void TC_06_FilterDate(String check_in, String check_out) throws InterruptedException {
+
+		driver.navigate().refresh();
+		driver.findElement(By.cssSelector("a[ui-sref='booker.bookingManage']")).click();
+		Thread.sleep(2000);
+		driver.findElement(By.id("btn-filter")).click();
+		Thread.sleep(2000);
+
+		// chọn ngày check in
+		driver.findElement(By.id("profit-from-date")).click();
+		WebElement fromDate = driver.findElement(By.xpath("(//div[normalize-space()='" + check_in + "'])"));
+		((JavascriptExecutor) driver).executeScript("arguments[0].click();", fromDate);
+		Thread.sleep(1000);
+		// Chon ngay check-out date
+//		driver.findElement(By.id("profit-from-date")).click();
+		WebElement toDate = driver.findElement(By.xpath("(//div[normalize-space()='" + check_out + "'])"));
+		((JavascriptExecutor) driver).executeScript("arguments[0].click();", toDate);
+		Thread.sleep(1000);
+		
+		driver.findElement(By.cssSelector(".btn-confirm")).click();
+		Thread.sleep(4000);
+		WebElement bookinglisttable = driver
+				.findElement(By.xpath("//div[@data-ng-controller='bookingManageController']"));
+		List<WebElement> bookinglist = bookinglisttable.findElements(By.cssSelector(".list-booking"));
+		int numOfBooking = bookinglist.size();
+
+		assertTrue(numOfBooking > 0);
+		System.out.println("Tổng số booking:" + bookinglist.size());
+		Thread.sleep(2000);
+	}
 }
